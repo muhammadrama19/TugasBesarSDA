@@ -12,6 +12,10 @@
 #ifndef header_h
 #define header_h
 
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
+
 
 /*Struct untuk pembentukan huffman tree*/
 typedef struct huffman_node{
@@ -51,19 +55,40 @@ void init_NRLL(huffman_NRLL *NRLL); //
     I.S : Tidak diketahui apakah NRLL kosong atau tidak
     F.S : Diketahui apakah NRLL kosong atau tidak
  */
-int is_NRLL_empty(huffman_NRLL NRLL);
+bool is_NRLL_empty(huffman_NRLL NRLL);
 
 /*
-    Memasukkan node ke antrian sesuai dengan urutan prioritas
+    Memasukkan node ke list sesuai dengan urutan prioritas
     Node dengan frekuensi lebih kecil didahulukan
-    Sehingga muncul antrian dengan urutan ascending
-    I.S : Tidak ada node di dalam antrian
-    F.S : Terdapat node di dalam antrian dengan urutan ascending
+    Sehingga muncul list dengan urutan ascending
+    I.S : Tidak ada node di dalam list
+    F.S : Terdapat node di dalam list dengan urutan ascending
  */
 void input_node(huffman_NRLL *NRLL, huffman_node_t *new_node);
 
 /*
-    Mengeluarkan node dari antrian untuk diproses menjadi left dan right son
+    Memasukan node ke list di posisi front
+    I.S : Node belum terpasang. List kosong
+    F.S : Node baru sudah terpasang didalam list
+*/
+void input_node_front(huffman_NRLL *NRLL, huffman_node_t *new_node);
+
+/*
+    Memasukan node ke list di posisi tengah tengah
+    I.S : Terdapat node minimal 2 node. Node belum terpasang
+    F.S : Node baru sudah terpasang didalam list diantara dua node
+*/
+void input_node_middle(huffman_NRLL *NRLL, huffman_node_t *new_node, huffman_node_t *help_pointer);
+
+/*
+    Memasukan node ke list di posisi rear (ujung)
+    I.S : Node belum terpasang
+    F.S : Node baru sudah terpasang didalam list
+*/
+void input_node_rear(huffman_NRLL *NRLL, huffman_node_t *new_node, huffman_node_t *help_pointer);
+
+/*
+    Mengeluarkan node dari list untuk diproses menjadi left dan right son
     I.S : Node dengan frekuensi terkecil ditunjuk front pada list belum dikeluarkan
     F.S : Node sudah dikeluarkan dari list, pointer NRLL sudah pindah ke next front
  */
