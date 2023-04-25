@@ -32,7 +32,7 @@ void input_node_rear(huffman_NRLL *NRLL, huffman_node_t *new_node, huffman_node_
 
 void input_node(huffman_NRLL *NRLL, huffman_node_t *new_node)
 {
-    if (is_prior_NRLL_empty(*NRLL))
+    if (is_NRLL_empty(*NRLL))
     {
         input_node_front(NRLL, new_node);
     }

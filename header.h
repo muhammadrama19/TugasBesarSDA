@@ -184,7 +184,7 @@ void print_code_table(codeblocks *table);
     I.S : Root subvar left dan right son masih menunjuk sebuah node
     F.S : Root sudah menunjuk null
 */
-void destroy_tree(huffman_node_t* root);
+void destroy_tree(huffman_node_t **root);
 
 /*
     Menyimpan history program kedalam file history.txt 
