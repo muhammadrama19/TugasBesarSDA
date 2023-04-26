@@ -55,9 +55,10 @@ void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)
     {
         code.code_length++;
         code.bit_code <<= 1;
-        create_code_table(node->left, table, code);
+        create_code(node->left, table, code);
         code.bit_code += 1;
-        create_code_table(node->right, table, code);
+        create_code
+        (node->right, table, code);
     }
 }
 
@@ -67,21 +68,7 @@ void read_via_string()
 	getchar();			//pembuang karakter enter
 	int unique_chars=0, sentence_size =0, sentence_capacity =1;
 	char c;
-    char *sentence;
-
-    //read dynamic untuk menghindari memory leak
-	sentence=(char *)malloc(1);
-	printf("Masukkan kalimat yang akan dikompresi: ");	
-	 while ((c = getchar()) != '\n') {
-        //cek jika penuh
-        if (sentence_size == sentence_capacity - 1) {
-            sentence_capacity *= 2;
-            sentence = realloc(sentence, sentence_capacity);
-        }
-        sentence[sentence_size++] = c;
-    }
-
-    sentence[sentence_size] = '\0';
+    char *sentence=read_dynamic();
 
     //kalimat diubah dari array menjadi array constant
     const char* string = (const char*) sentence;

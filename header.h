@@ -225,4 +225,13 @@ void read_via_char();
 */
 void read_via_file();
 
+/*
+    Melakukan read string secara dinamis dimana setiap karakter
+    terbaca sistem akan melakukan penyesuaian memori
+    I.S : Kapasitas memori pada sistem masih di inisialisasi dengan nilai awal 1
+    F.S : Kapasitas sudah menyesuaikan dengan karakter yang terbaca.
+
+*/
+char* read_dynamic();
+
 #endif

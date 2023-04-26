@@ -48,3 +48,27 @@ void print_hierarchy(huffman_node_t *current, int level)
         printHierarchy(current->left, level + 1);
     }
 }
+
+char* read_dynamic(){
+    char* sentence = (char*)malloc(1);
+    int sentence_size = 0;
+    int sentence_capacity = 1;
+
+    // printf("Masukkan kalimat yang akan dikompresi: ");
+
+    //loop untuk membaca input secara karakter per karakter
+    char c;
+    while ((c = getchar()) != '\n') {
+        //jika kapasitas kalimat sudah penuh, alokasikan memori baru dengan ukuran dua kali lipat dari kapasitas sebelumnya
+        //!avoid memory leak
+        if (sentence_size == sentence_capacity - 1) {
+            sentence_capacity *= 2;
+            sentence = (char*)realloc(sentence, sentence_capacity);
+        }
+        sentence[sentence_size++] = c;
+    }
+
+    //tambahkan null terminator pada akhir kalimat
+    sentence[sentence_size] = '\0';
+    return sentence;
+}
