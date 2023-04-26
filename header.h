@@ -15,6 +15,7 @@
 #include<stdio.h>
 #include<stdbool.h>
 #include<stdlib.h>
+#define MAX_ASCII_CHARACTERS 128
 
 
 /*Struct untuk pembentukan huffman tree*/
@@ -140,7 +141,7 @@ void build_huffman_tree(huffman_NRLL *NRLL);
     I.S : Huffman tree belum terbentuk masih dalam bentuk karakter dan frekuensinya
     F.S : Huffman tree terbentuk ditampilkan ke layar
  */
-huffman_node_t* create_huffman(int frequency_map[128]);
+huffman_node_t* create_huffman(int frequency_map[MAX_ASCII_CHARACTERS]);
 
 /*
     Mengkomputasi bit code secara rekursif lalu ditampilkan sesuai karakter dan frekuensinya 
@@ -148,7 +149,8 @@ huffman_node_t* create_huffman(int frequency_map[128]);
     I.S :  Kode setiap karakter belum diketahui
     F.S :  Kode sudah diketahui
  */
-void create_code_table(huffman_node_t *node, codeblocks *table, codeblocks code);
+
+void create_code(huffman_node_t *root, codeblocks *table, codeblocks code);
 
 /*
     Mencetak bit code ke layar
@@ -184,7 +186,7 @@ void print_code_table(codeblocks *table);
     I.S : Root subvar left dan right son masih menunjuk sebuah node
     F.S : Root sudah menunjuk null
 */
-void destroy_tree(huffman_node_t **root);
+void destroy_tree(huffman_node_t *root);
 
 /*
     Menyimpan history program kedalam file history.txt 

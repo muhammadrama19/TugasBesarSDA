@@ -16,20 +16,20 @@ huffman_node_t* make_huffman_node(char letter, int frequency, huffman_node_t *le
     new_node->left=left;
     new_node->right=right;
     new_node->next=NULL; //NULL Karena sudah mulai membentuk tree
+    return new_node;
 }
 
-huffman_node_t *create_huffman(int frequency_map[128])
+huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTERS])
 {
     int i;
     huffman_NRLL forest;
     init_NRLL(&forest);
-    huffman_node_t *new_node;
 
-    for (i = 0; i < 128; i++)
+    for (i = 0; i < MAX_ASCII_CHARACTERS; i++)
     {
         if (frequency_map[i])
         {
-            *new_node = make_huffman_node(i, frequency_map[i], NULL, NULL);
+            huffman_node_t *new_node = make_huffman_node(i, frequency_map[i], NULL, NULL);
             input_node(&forest, new_node);
         }
     }
@@ -45,7 +45,7 @@ huffman_node_t *create_huffman(int frequency_map[128])
     return forest.front;
 }
 
-void create_table(huffman_node_t *node, codeblocks *table, codeblocks code)
+void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)
 {
     if (is_leaf(node))
     {
@@ -69,9 +69,11 @@ void read_via_string()
 	char c;
     char *sentence;
 
-	sentence=(char *)malloc(sizeof(char *));
+    //read dynamic untuk menghindari memory leak
+	sentence=(char *)malloc(1);
 	printf("Masukkan kalimat yang akan dikompresi: ");	
 	 while ((c = getchar()) != '\n') {
+        //cek jika penuh
         if (sentence_size == sentence_capacity - 1) {
             sentence_capacity *= 2;
             sentence = realloc(sentence, sentence_capacity);
@@ -83,21 +85,21 @@ void read_via_string()
 
     //kalimat diubah dari array menjadi array constant
     const char* string = (const char*) sentence;
-    const char* to_encode = (const char*) sentence;
+    const char* to_encode_string = (const char*) sentence;
 
     //jumlah frekuensi ditaruh ke dalam array, dengan indeks
 	//array sebagai representasi karakter yang dihitung
-	int frequency_map[MAX_ASCII_CHARACTER] = { 0 };
+	int frequency_map[MAX_ASCII_CHARACTERS] = { 0 };
 	while (*string){
 		frequency_map[(int)*string++]++;
 	}
 
-    	//membuat huffman tree, mengembalikan root untuk proses decode nantinya
+    //membuat huffman tree, mengembalikan root untuk proses decode nantinya
     codeblocks code = { 0 };
-    codeblocks table[MAX_ASCII_CHARACTER] = { 0 };
+    codeblocks table[MAX_ASCII_CHARACTERS] = { 0 };
     
-    int i = 1;
-    for (i = 1; i < 128; i++) {
+    //check unique char
+    for (int i = 0; i < MAX_ASCII_CHARACTERS; i++) {
         if (frequency_map[i] > 0) {
             unique_chars++;
         }
@@ -106,23 +108,24 @@ void read_via_string()
         }
     }
     
-    if (unique_chars ==1 || sentence_size ==1) {
-    	printf("Tree tidak dapat terbentuk\n");
+    //alert for unique
+    if (unique_chars ==1 || sentence[1]=='\0') {
+    	printf("Tree tidak dapat terbentuk karena hanya terdapat 1 huruf atau 1 jenis huruf..\n");
         free(sentence);
         return;
 	}
 	
-	huffman_node_t *root = execute_huffman(frequency_map);
+	huffman_node_t *root = create_huffman(frequency_map);
 
     //make code
-	compute_code_table(root, table, code);
+	create_code(root, table, code);
     print_code_table(table);
 
     //menampilkan hasil kompresi dari stirng yang telah diterjemahkan
     printf("\nString setelah kompresi\n");
-    while (*to_encode){
-		int letter = (int) *to_encode++;
-		code_print(table + letter);
+    while (*to_encode_string){
+		int letter = (int) *to_encode_string++;
+		print_code(table + letter);
 		write_code_to_file(table + letter);
 		write_code_to_file_hasil(table + letter);
 	}
@@ -133,18 +136,18 @@ void read_via_string()
     decode_string(root);
     printf("\n");
 
+    //saving
     save_history(sentence,&code);
 	fclose(fopen("encodedString.txt", "w"));
 	fclose(fopen("hasil.txt", "w"));
 	free(sentence);
-	destroy_tree(&root);
+	destroy_tree(root);
 }
 
-void destroy_tree(huffman_node_t **root) {
-    if (*root != NULL) {
-        destroy_tree(&((*root)->left));
-        destroy_tree(&((*root)->right));
-        free(*root);
-        *root = NULL;
+void destroy_tree(huffman_node_t* root) {
+    if (root != NULL) {
+        destroy_tree(root->left);
+        destroy_tree(root->right);
+        free(root);
     }
 }
