@@ -147,15 +147,20 @@ void read_via_char() // not finished
     system("cls");
     getchar(); // pembuang karakter enter
 
-    int i, sum_of_character, frequency_map[MAX_ASCII_CHARACTER] = {0};
+    int i, sum_of_character=1, frequency_map[MAX_ASCII_CHARACTER] = {0};
     char *input_string;
 
     // meminta inputan jumlah karakter yang akan diencode
     printf("Masukkan banyak karakter yang akan diencode : ");
     scanf("%d", &sum_of_character);
     printf("\n");
+    while (sum_of_character<=0)
+    {
+        printf("Jumlah tidak boleh negatif!");
+        scanf("%d",&sum_of_character);
+    }
 
-    input_string = (char *)malloc(10000 * sizeof(char)); // allocate memory for the input string
+    input_string = (char *)malloc(sum_of_character * sizeof(char)); 
 
     // membaca karakter dan frekuensinya
     for (i = 0; i < sum_of_character; i++)
@@ -166,12 +171,14 @@ void read_via_char() // not finished
         printf("Masukkan karakter\t: ");
         scanf(" %c", &letter);
 
-        // check if the character has already been inputted before
+        // cek keunikan karakter apakah sudah pernah diinput sebelumnya
         if (strchr(input_string, letter))
         {
+            //unik
             printf("Karakter %c telah dimasukkan sebelumnya.\n", letter);
             printf("Masukkan frekuensi tambahan : ");
             scanf("%d", &frequency);
+            //validasi bilangan negatif
             while (frequency <= 0)
             {
                 printf("Frekuensi harus lebih besar dari 0. Silakan masukkan kembali: ");
@@ -182,6 +189,7 @@ void read_via_char() // not finished
         }
         else
         {
+            //jika tidak unik
             printf("Masukkan frekuensi (lebih besar dari 0) : ");
             scanf("%d", &frequency);
             while (frequency <= 0)
@@ -209,7 +217,7 @@ void read_via_char() // not finished
     const char *string_new = (const char *)input_string;
     const char *for_history = (const char *)input_string;
 
-    printf("\nHasil encode:");
+    printf("\nHasil encode:\n");
     while (*string_new)
     {
         int letter = (int)*string_new++;
@@ -304,7 +312,6 @@ void read_via_string()
     destroy_tree(root);
     free(sentence);
 }
-
 void read_via_file()
 {
     system("cls");
@@ -337,13 +344,17 @@ void read_via_file()
 
     printf("\nString setelah dikompresi\n");
     file_to_read = fopen(file_pointer, "r");
-    char input_str[MAX_ASCII_CHARACTER * 1000] = {0}; // inisialisasi string input
+    fseek(file_to_read, 0L, SEEK_END); // move to the end of the file
+    long file_size = ftell(file_to_read); // get the size of the file in bytes
+    rewind(file_to_read); // move back to the beginning of the file
+    char *input_str = (char *) malloc(file_size + 1); // dynamically allocate memory for the input string
+    input_str[0] = '\0'; // initialize the string to empty
     while ((letter = fgetc(file_to_read)) != EOF)
     {
         code_print(table + letter);
         write_code_to_file(table + letter);
         write_code_to_file_hasil(table + letter);
-        sprintf(input_str + strlen(input_str), "%c", letter); // menambahkan karakter ke string input
+        sprintf(input_str + strlen(input_str), "%c", letter); // append the character to the input string
     }
     printf("\n");
     printf("\nString setelah dekompresi\n");
@@ -354,4 +365,6 @@ void read_via_file()
     fclose(fopen("hasil.txt", "w"));
     fclose(file_to_read);
     destroy_tree(root);
+    free(input_str); // free the dynamically allocated memory
 }
+
