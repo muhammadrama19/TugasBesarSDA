@@ -9,58 +9,68 @@
 */
 
 
-#ifndef header_h
-#define header_h
-
-#include<stdio.h>
-#include<stdbool.h>
-#include<stdlib.h>
+#ifndef huffman_coding_tree_h
+#define huffman_coding_tree_h
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <wchar.h>
+#include <wctype.h>
 #include <string.h>
 #include <windows.h>
 
-#define MAX_ASCII_CHARACTERS 128
-#define BLANK_CHAR '\0'
+#define BLANK_CHARACTER '\0'
+#define MAX_ASCII_CHARACTER 128
 
+#define READ_STRING 1
+#define READ_FILE 2
+#define READ_MAP_CHAR 3 
+#define DISPLAY_HISTORY 4 
+#define DISPLAY_ABOUT 5 
+#define EXIT 6
+#define BUFFER_SIZE 256
 
-/*Struct untuk pembentukan huffman tree*/
-typedef struct huffman_node{
-    char letter;
+/* Struktur huffman node */
+typedef struct huffman_node
+{
+    wchar_t letter;
     int frequency;
     struct huffman_node *left;
     struct huffman_node *right;
     struct huffman_node *next;
 } huffman_node_t;
 
-/* Struct pointer NRLL */
-typedef struct huffman_NRLL{
+/* List huffman node */
+typedef struct huffman_NRLL
+{
     huffman_node_t *front;
     int size;
 } huffman_NRLL;
 
 /*  Struktur untuk menyimpan binary code dari huffman node */
-typedef struct codewords{
-    int code_length;
-    int bit_code;
+typedef struct codeblocks
+{
+    size_t code_length;
+    uint32_t bit_code;
 } codeblocks;
 
 /**==========================================**/
 
-
-
-/*  Insialisasi sebuah List yang akan berfungsi 
+/*
+     Insialisasi sebuah List yang akan berfungsi
     untuk memproses dari list node of huffman tree
     menjadi huffman tree
     I.S : NRLL belum diinisialisasi pointer menunjuk tak tentu dan size berisi tak tentu
     F.S : NRLL pointer menunjuk ke NULL dan size diinsialisasi menjadi
  */
-void init_NRLL(huffman_NRLL *NRLL); //
+void init_NRLL(huffman_NRLL *NRLL);
 
 /*
     Melakukan pengecekan terhadap NRLL, apakah NRLL tersebut kosong atau tidak
     I.S : Tidak diketahui apakah NRLL kosong atau tidak
     F.S : Diketahui apakah NRLL kosong atau tidak
  */
-bool is_NRLL_empty(huffman_NRLL NRLL);
+int is_NRLL_empty(huffman_NRLL NRLL);
 
 /*
     Memasukkan node ke list sesuai dengan urutan prioritas
@@ -83,36 +93,36 @@ void input_node_front(huffman_NRLL *NRLL, huffman_node_t *new_node);
     I.S : Terdapat node minimal 2 node. Node belum terpasang
     F.S : Node baru sudah terpasang didalam list diantara dua node
 */
-void input_node_middle(huffman_NRLL *NRLL, huffman_node_t *new_node, huffman_node_t *help_pointer);
+void input_node_middle(huffman_node_t *new_node, huffman_node_t *help_pointer);
 
 /*
     Memasukan node ke list di posisi rear (ujung)
     I.S : Node belum terpasang
     F.S : Node baru sudah terpasang didalam list
 */
-void input_node_rear(huffman_NRLL *NRLL, huffman_node_t *new_node, huffman_node_t *help_pointer);
+void input_node_rear(huffman_node_t *new_node, huffman_node_t *help_pointer);
 
 /*
     Mengeluarkan node dari list untuk diproses menjadi left dan right son
     I.S : Node dengan frekuensi terkecil ditunjuk front pada list belum dikeluarkan
     F.S : Node sudah dikeluarkan dari list, pointer NRLL sudah pindah ke next front
  */
-huffman_node_t* delete_node(huffman_NRLL *NRLL);
+huffman_node_t *delete_node(huffman_NRLL *NRLL);
 
 /*
     Membuat node huffman
     I.S : Huffman node belum terbentuk dari gabungan 2 node frekuensi terkecil
     F.S : Huffman node terbentuk dengan left son dan right son sudah menunjuk node yang sesuai
  */
-huffman_node_t* make_huffman_node(char letter, int frequency, huffman_node_t *left, huffman_node_t *right);
+huffman_node_t *make_huffman_node(char letter, int frequency, huffman_node_t *left, huffman_node_t *right);
 
-
-
-/*  Output tree dari level 0
+/*
+     Output tree dari level 0
     I.S : Huffman tree belum ditampilkan ke layar
     F.S : Huffman tree ditampilkan ke layar dari level 0
 */
 void print_hierarchy(huffman_node_t *current, int level);
+
 /*
     Mencetak isi list yang terdapat pada NRLL
     I.S : List NRLL belum ditampilkan di layar
@@ -125,7 +135,6 @@ void print_NRLL(huffman_NRLL NRLL);
     I.S : Tidak diketahui apakah node merupakan daun atau bukan
     F.S : Diketahui apakah node daun atau bukan
  */
-
 bool is_leaf(huffman_node_t *node);
 
 /*
@@ -133,23 +142,21 @@ bool is_leaf(huffman_node_t *node);
     I.S : Huffman tree belum terbentuk dari kumpulan huffman node (forest)
     F.S : Huffman tree sudah terbentuk dari kumpulan huffman node (forest)
  */
-void build_huffman_tree(huffman_NRLL *NRLL);
+void build_huffman(huffman_NRLL *NRLL);
 
 /*
-    Menjalankan pembentukan huffman tree dari map frekuensi yang ada, dilanjut inisiasi forest sampai dengan print huffman tree
-    I.S : Huffman tree belum terbentuk masih dalam bentuk karakter dan frekuensinya
-    F.S : Huffman tree terbentuk ditampilkan ke layar
+    Menjalankan pembentukan huffman tree dari map frequency yang ada
+    dilanjut inisiasi forest sampai dengan print huffman tree
  */
-huffman_node_t* create_huffman(int frequency_map[MAX_ASCII_CHARACTERS]);
+huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTER]);
 
 /*
-    Mengkomputasi bit code secara rekursif lalu ditampilkan sesuai karakter dan frekuensinya 
+    Mengkomputasi bit code secara rekursif lalu ditampilkan sesuai karakter dan frekuensinya
     Sumber: //https://stackoverflow.com/questions/47421732/how-can-i-generate-a-binary-code-table-of-a-huffman-tree
     I.S :  Kode setiap karakter belum diketahui
     F.S :  Kode sudah diketahui
  */
-
-void create_code(huffman_node_t *root, codeblocks *table, codeblocks code);
+void create_code(huffman_node_t *node, codeblocks *table, codeblocks code);
 
 /*
     Mencetak bit code ke layar
@@ -157,7 +164,7 @@ void create_code(huffman_node_t *root, codeblocks *table, codeblocks code);
     I.S : Bit code belum tampil di layar
     F.S : Bit code tampil pada layar
  */
-void print_code(codeblocks *code);
+void code_print(codeblocks *code);
 
 /*
     Menyimpan string yang telah diterjemahkan menjadi kode biner ke dalam encodedString.txt
@@ -188,8 +195,8 @@ void print_code_table(codeblocks *table);
 void destroy_tree(huffman_node_t *root);
 
 /*
-    Menyimpan history program kedalam file history.txt 
-    I.S : History program belum tersimpan 
+    Menyimpan history program kedalam file history.txt
+    I.S : History program belum tersimpan
     F.S : History program telah tersimpan
 */
 void save_history(const char *input_string, codeblocks *code);
@@ -201,7 +208,6 @@ void save_history(const char *input_string, codeblocks *code);
 */
 void display_history();
 
-
 /*
     Melakukan encoding melalui input string. Modul ini akan melakukan pemanggilan modul modul diatas
     I.S : Input dari user belum didapatkan
@@ -211,7 +217,7 @@ void read_via_string();
 
 /*
     Melakukan encoding melalui input  char dan frekuensinya
-    I.S : Input dari user belum didapatkan 
+    I.S : Input dari user belum didapatkan
     F.S: Input user didapatkan dan sudah diencoding menjadi huffman code
 
 */
@@ -231,7 +237,7 @@ void read_via_file();
     F.S : Kapasitas sudah menyesuaikan dengan karakter yang terbaca.
 
 */
-char* read_dynamic();
+char *read_dynamic();
 
 /*
     Melakukan cetak teks di tengah layar
@@ -249,6 +255,9 @@ void printc(char Pesan[]);
 */
 void print_title();
 
-
+int choose_read_type();
+void run_huffman();
+void exit_huffman();
+void ask_for_exit();
 
 #endif
