@@ -266,7 +266,7 @@ void read_via_string()
     destroy_tree(root);
 }
 
-void run_huffman_read_file()
+void read_via_file()
 {
     system("cls");
     getchar();
@@ -289,10 +289,10 @@ void run_huffman_read_file()
     fclose(file_to_read);
     codeblocks code = { 0 };
     codeblocks table[MAX_ASCII_CHARACTERS] = { 0 };
-    huffman_node_t *root = execute_huffman(frequency_map);
+    huffman_node_t *root = create_huffman(frequency_map);
 
-    compute_code_table(root, table, code);
-    print_code_table(table);
+    create_code(root, table, code);
+    print_code(table);
 
     printf("\nString setelah dikompresi\n");
     file_to_read = fopen(file_pointer, "r");
@@ -301,7 +301,7 @@ void run_huffman_read_file()
         code_print(table + letter);
         write_code_to_file(table + letter);
         write_code_to_file_hasil(table + letter);
-		write_code_to_file_bin(table + letter);
+		write_code_to_file(table + letter);
         sprintf(input_str + strlen(input_str), "%c", letter); // menambahkan karakter ke string input
     }
     printf("\n");
