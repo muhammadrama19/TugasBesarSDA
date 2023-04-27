@@ -1,6 +1,11 @@
 #include "header.h"
 #include "NRLL.c"
 
+bool is_leaf(huffman_node_t *node)
+{
+    return node->left == NULL && node->right == NULL;
+}
+
 huffman_node_t *make_huffman_node(char letter, int frequency, huffman_node_t *left, huffman_node_t *right)
 {
     huffman_node_t *new_node = (huffman_node_t *)malloc(sizeof(huffman_node_t));
@@ -28,6 +33,7 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTERS])
     {
         if (frequency_map[i])
         {
+            //pemrosesan awal dimana masih berbentuk list
             huffman_node_t *new_node = make_huffman_node(i, frequency_map[i], NULL, NULL);
             input_node(&forest, new_node);
         }
@@ -42,6 +48,43 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTERS])
     printf("\nHierarki Huffman Tree\n");
     print_hierarchy(forest.front, 0);
     return forest.front;
+}
+
+void build_huffman_tree(huffman_NRLL *NRLL)
+{
+    if (is_NRLL_empty(*NRLL));
+    {
+        printf("Gagal membuat...");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("\nMemulai proses pembentukan huffman tree...\n\n");
+    if ((*NRLL).size == 1)
+    {
+        // handling untuk teks hanya dengan satu karakter
+        print_NRLL(*NRLL);
+    }
+    else
+    {
+        int steps = 1;
+        while ((*NRLL).size > 1)
+        {
+            huffman_node_t *smallest, *second_smallest;
+
+            // ambil dua node dengan frequency terkecil
+            smallest = delete_node(NRLL);
+            second_smallest = delete_node(NRLL);
+
+            // buat node dengan frequency gabungan dari keduanya
+            // dengan anak smallest sebagai anak kiri dan nd_smallest anak kanan
+            huffman_node_t *new_node = make_huffman_node(BLANK_CHAR, smallest->frequency + second_smallest->frequency, smallest, second_smallest);
+
+            // masukkan kembali ke queue untuk diurutkan
+            input_node(NRLL, new_node);
+            printf("Step %d:\t", steps++);
+            print_NRLL(*NRLL);
+        }
+    }
 }
 
 void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)

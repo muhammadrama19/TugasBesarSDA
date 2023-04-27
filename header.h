@@ -17,6 +17,7 @@
 #include<stdlib.h>
 
 #define MAX_ASCII_CHARACTERS 128
+#define BLANK_CHAR '\0'
 
 
 /*Struct untuk pembentukan huffman tree*/
