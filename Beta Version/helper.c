@@ -120,6 +120,7 @@ void save_history(const char *input_string, codeblocks *code)
 
 void display_history()
 {
+    system("cls");
     FILE *file_to_read = fopen("history.txt", "r");
     if (file_to_read == NULL)
     {
@@ -228,6 +229,11 @@ void run_huffman()
     case READ_MAP_CHAR:
     {
         read_via_char();
+        break;
+    }
+    case DISPLAY_HISTORY:
+    {
+        display_history();
         break;
     }
     case EXIT:
