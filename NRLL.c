@@ -1,5 +1,4 @@
-#include"header.h"
-
+#include "header.h"
 
 void init_NRLL(huffman_NRLL *NRLL)
 {
@@ -9,7 +8,7 @@ void init_NRLL(huffman_NRLL *NRLL)
 
 bool is_NRLL_empty(huffman_NRLL NRLL)
 {
-    return NRLL.size=0;
+    return NRLL.size = 0;
 }
 
 void input_node_front(huffman_NRLL *NRLL, huffman_node_t *new_node)
@@ -65,5 +64,17 @@ void input_node(huffman_NRLL *NRLL, huffman_node_t *new_node)
     NRLL->size++;
 }
 
+huffman_node_t *delete_node(huffman_NRLL *NRLL)
+{
+    if (is_NRLL_empty(*NRLL))
+    {
+        printf("Antrian kosong");
+        exit(EXIT_FAILURE);
+    }
 
-
+    huffman_node_t *delete_node = NRLL->front;
+    NRLL->front = NRLL->front->next;
+    NRLL->size--;
+    delete_node->next = NULL;
+    return delete_node;
+}
