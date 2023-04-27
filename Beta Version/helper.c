@@ -319,3 +319,45 @@ int choose_read_type()
     scanf("%d", &answer);
     return answer;
 }
+
+
+
+char input_char()
+{
+    char input[100];
+    printf("Masukkan karakter\t: ");
+    fgets(input, 100, stdin);
+    if (strlen(input) == 2) {
+        return input[0];
+    } else {
+        printf("Invalid input. Masukan berupa karakter!.\n");
+        return input_char();
+    }
+}
+
+int input_integer(void) {
+    int input, valid;
+    char buffer[1024];
+    do {
+        valid = 1;
+        if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+            printf("Invalid input. Masukan berupa angka!\n");
+            valid = 0;
+        }
+        else if (sscanf(buffer, "%d", &input) != 1) {
+            printf("Invalid input. Masukan berupa angka!\n");
+            valid = 0;
+        }
+        else {
+            // Check for non-integer characters in the input
+            for (char *p = buffer; *p != '\0'; p++) {
+                if (!isspace(*p) && !isdigit(*p) && *p != '+' && *p != '-') {
+                    printf("Invalid input. Masukan berupa angka.\n");
+                    valid = 0;
+                    break;
+                }
+            }
+        }
+    } while (!valid);
+    return input;
+}

@@ -152,7 +152,7 @@ void read_via_char() // not finished
 
     // meminta inputan jumlah karakter yang akan diencode
     printf("Masukkan banyak karakter yang akan diencode : ");
-    scanf("%d", &sum_of_character);
+    sum_of_character=input_integer();
     printf("\n");
     while (sum_of_character<0)
     {
@@ -168,8 +168,8 @@ void read_via_char() // not finished
         char letter;
         int frequency;
         printf("Karakter ke - %d\n", i + 1);
-        printf("Masukkan karakter\t: ");
-        scanf(" %c", &letter);
+        
+        letter=input_char();
 
         // cek keunikan karakter apakah sudah pernah diinput sebelumnya
         if (strchr(input_string, letter))

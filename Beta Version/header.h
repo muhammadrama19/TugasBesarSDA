@@ -18,6 +18,7 @@
 #include <wctype.h>
 #include <string.h>
 #include <windows.h>
+#include<ctype.h>
 
 #define BLANK_CHARACTER '\0'
 #define MAX_ASCII_CHARACTER 128
@@ -259,5 +260,7 @@ int choose_read_type();
 void run_huffman();
 void exit_huffman();
 void ask_for_exit();
+char input_char(void); 
+int input_integer(void);
 
 #endif
