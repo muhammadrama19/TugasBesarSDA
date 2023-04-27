@@ -1,6 +1,6 @@
-/*  
+/*
     ===========PROGRAM HUFFMAN CODING===============
-    KELAS    : 1A 
+    KELAS    : 1A
     KELOMPOK : 1B
     ANGGOTA: : MUHAMMAD RAMA NURIMANI 221524021
                RAHMA DIVINA 221524026
@@ -8,16 +8,13 @@
     =======================================================
 */
 
-
 #include "header.h"
 #include "NRLL.c"
-#include"helper.c"
+#include "helper.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include<string.h>
-
-
+#include <string.h>
 
 huffman_node_t *make_huffman_node(char letter, int frequency, huffman_node_t *left, huffman_node_t *right)
 {
@@ -34,8 +31,6 @@ huffman_node_t *make_huffman_node(char letter, int frequency, huffman_node_t *le
 
     return new_node;
 }
-
-
 
 bool is_leaf(huffman_node_t *node)
 {
@@ -104,7 +99,6 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTER])
     return forest.front;
 }
 
-
 void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)
 {
     if (is_leaf(node))
@@ -147,76 +141,75 @@ void decode_string(huffman_node_t *root)
     }
 }
 
-
-void read_via_char()
+void read_via_char() // not finished
 {
+
     system("cls");
     getchar(); // pembuang karakter enter
 
     int i, sum_of_character, frequency_map[MAX_ASCII_CHARACTER] = {0};
     char *input_string;
 
-    // meminta inputan jumlah karakter yang akan dikompresi
-    printf("Masukkan banyak karakter yang akan encoding : ");
+    // meminta inputan jumlah karakter yang akan diencode
+    printf("Masukkan banyak karakter yang akan diencode : ");
     scanf("%d", &sum_of_character);
     printf("\n");
 
+    input_string = (char *)malloc(10000 * sizeof(char)); // allocate memory for the input string
+
     // membaca karakter dan frekuensinya
-    for (i = 0; i < sum_of_character; )
+    for (i = 0; i < sum_of_character; i++)
     {
         char letter;
-        int frequency=0;
+        int frequency;
         printf("Karakter ke - %d\n", i + 1);
         printf("Masukkan karakter\t: ");
         scanf(" %c", &letter);
 
-        while ((int)letter < 0 || (int)letter > 127) {
-            printf("Karakter harus di antara ASCII 0-127. Silakan masukkan kembali: ");
-            scanf(" %c", &letter);
-        }
-
-        // check if the letter is already in the input string
-        int j;
-        for (j = 0; j < i; j++) {
-            if (input_string[j] == letter) {
-                printf("Karakter %c telah dimasukkan sebelumnya.\n", letter);
-                printf("Masukkan frekuensi tambahan : ");
-                scanf("%d", &frequency);
-                while (frequency <= 0) {
-                    printf("Frekuensi harus lebih besar dari 0. Silakan masukkan kembali: ");
-                    scanf("%d", &frequency);
-                }
-                frequency_map[letter] += frequency;
-                break; // break out of the loop
-            }
-        }
-
-        // if the letter is not in the input string, add it
-        if (j == i) {
-            printf("Masukkan frekuensi (lebih besar dari 0) : ");
+        // check if the character has already been inputted before
+        if (strchr(input_string, letter))
+        {
+            printf("Karakter %c telah dimasukkan sebelumnya.\n", letter);
+            printf("Masukkan frekuensi tambahan : ");
             scanf("%d", &frequency);
-            while (frequency <= 0) {
+            while (frequency <= 0)
+            {
                 printf("Frekuensi harus lebih besar dari 0. Silakan masukkan kembali: ");
                 scanf("%d", &frequency);
             }
-            input_string[i] = letter;
-            frequency_map[letter] = frequency;
-            i++;
+            frequency_map[letter] += frequency;
+            i--;
         }
-
+        else
+        {
+            printf("Masukkan frekuensi (lebih besar dari 0) : ");
+            scanf("%d", &frequency);
+            while (frequency <= 0)
+            {
+                printf("Frekuensi harus lebih besar dari 0. Silakan masukkan kembali: ");
+                scanf("%d", &frequency);
+            }
+            frequency_map[letter] = frequency;
+            input_string[i] = letter; // Add the letter to the input string
+        }
         printf("\n");
     }
-
+    input_string[i] = '\0'; // Null-terminate the input string
     codeblocks code = {0};
     codeblocks table[MAX_ASCII_CHARACTER] = {0};
     huffman_node_t *root = create_huffman(frequency_map);
+    if (root == NULL)
+    {
+        printf("Alokasi gagal, root tidak terbentuk.");
+    }
+
     create_code(root, table, code);
     print_code_table(table);
 
     const char *string_new = (const char *)input_string;
     const char *for_history = (const char *)input_string;
 
-    printf("\nHasil Encode:");
+    printf("\nHasil encode:");
     while (*string_new)
     {
         int letter = (int)*string_new++;
@@ -224,13 +217,14 @@ void read_via_char()
         write_code_to_file(table + letter);
         write_code_to_file_hasil(table + letter);
     }
-        printf("\nString setelah decode\n");
-        decode_string(root);
-        printf("\n");
-        save_history(for_history, &code);
-        fclose(fopen("encodedString.txt", "w"));
-        fclose(fopen("hasil.txt", "w"));
-        destroy_tree(root);
+    printf("\nString setelah didecode\n");
+    decode_string(root);
+    printf("\n");
+    save_history(for_history, &code);
+    fclose(fopen("encodedString.txt", "w"));
+    fclose(fopen("hasil.txt", "w"));
+    destroy_tree(root);
+    free(input_string);
 }
 
 void read_via_string()
@@ -311,9 +305,8 @@ void read_via_string()
     free(sentence);
 }
 
-
-
-void read_via_file(){
+void read_via_file()
+{
     system("cls");
     getchar();
     char letter;
@@ -324,17 +317,19 @@ void read_via_file(){
     FILE *file_to_read, *fp;
     file_to_read = fopen(file_pointer, "r");
 
-    if (!file_to_read){
+    if (!file_to_read)
+    {
         printf("File tidak ditemukan");
         ask_for_exit();
     }
     int frequency_map[MAX_ASCII_CHARACTER] = {0};
-    while ((letter = fgetc(file_to_read)) != EOF){
+    while ((letter = fgetc(file_to_read)) != EOF)
+    {
         frequency_map[(int)letter++]++;
     }
     fclose(file_to_read);
-    codeblocks code = { 0 };
-    codeblocks table[MAX_ASCII_CHARACTER] = { 0 };
+    codeblocks code = {0};
+    codeblocks table[MAX_ASCII_CHARACTER] = {0};
     huffman_node_t *root = create_huffman(frequency_map);
 
     create_code(root, table, code);
@@ -343,7 +338,8 @@ void read_via_file(){
     printf("\nString setelah dikompresi\n");
     file_to_read = fopen(file_pointer, "r");
     char input_str[MAX_ASCII_CHARACTER * 1000] = {0}; // inisialisasi string input
-    while ((letter = fgetc(file_to_read)) != EOF){
+    while ((letter = fgetc(file_to_read)) != EOF)
+    {
         code_print(table + letter);
         write_code_to_file(table + letter);
         write_code_to_file_hasil(table + letter);
@@ -355,7 +351,7 @@ void read_via_file(){
     save_history(input_str, &code);
     printf("\n");
     fclose(fopen("encodedString.txt", "w"));
-	fclose(fopen("hasil.txt", "w"));
+    fclose(fopen("hasil.txt", "w"));
     fclose(file_to_read);
-	destroy_tree(root);
+    destroy_tree(root);
 }
