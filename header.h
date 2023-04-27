@@ -15,6 +15,7 @@
 #include<stdio.h>
 #include<stdbool.h>
 #include<stdlib.h>
+
 #define MAX_ASCII_CHARACTERS 128
 
 
