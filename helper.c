@@ -74,3 +74,42 @@ char* read_dynamic(){
     sentence[sentence_size] = '\0';
     return sentence;
 }
+
+void printc(char Pesan[])
+{
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	// ^ Menyimpan info tentang screen buffer
+	int columns;
+
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	// ^ Console screen buffer  ^ Konsol input                  ^output
+	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	//        ^ Mendapat jumlah karakter maksimal pada baris konsol
+
+	if (((columns - strlen(Pesan)) / 2) > 1)
+	{
+		for (size_t i = 0; i < ((columns - strlen(Pesan)) / 2); i++)
+		{
+			printf(" ");
+		}
+	}
+	// ^ Printf spasi sebanyak yang dibutuhkan teks agar memiliki posisi tengah
+
+	printf("%s", Pesan);
+	// ^ Print pesan yang ingin diletakan di tengah layar
+}
+
+void print_title(){
+    printf("\n\n");
+    printc("888    888888     88888888888888888888888888b     d888       d8888888b    888   .d8888b.  .d88888b. 8888888b.8888888888b    888 .d8888b.  \n");  
+    printc("888    888888     888888       888       8888b   d8888      d888888888b   888   d88P  Y88bd88P' 'Y88b888' 'Y88b 888  8888b   888d88P  Y88b\n"); 
+    printc("888    888888     888888       888       88888b.d88888     d88P88888888b  888   888    888888     888888    888 888  88888b  888888    888\n"); 
+    printc("8888888888888     8888888888   8888888   888Y88888P888    d88P 888888Y88b 888   888       888     888888    888 888  888Y88b 888888       \n");        
+    printc("888    888888     888888       888       888 Y888P 888   d88P  888888 Y88b888   888       888     888888    888 888  888 Y88b888888  88888\n"); 
+    printc("888    888888     888888       888       888  Y8P  888  d88P   888888  Y88888   888    888888     888888    888 888  888  Y88888888    888\n"); 
+    printc("888    888Y88b. .d88P888       888       888   '   888 d8888888888888   Y8888   Y88b  d88PY88b. .d88P888  .d88P 888  888   Y8888Y88b  d88P\n"); 
+    printc("888    888 'Y88888P' 888       888       888       888d88P     888888    Y888   'Y8888P'  'Y88888P' 8888888P'8888888888    Y888 'Y8888P88 \n");
+    printf("\n\n");
+    printc("\t\t\t\t\t\t\t      created by Kelompok 1B Kelas 1A\n");
+    printf("\n\n\n\n\n");
+}

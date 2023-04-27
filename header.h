@@ -15,6 +15,8 @@
 #include<stdio.h>
 #include<stdbool.h>
 #include<stdlib.h>
+#include <string.h>
+#include <windows.h>
 
 #define MAX_ASCII_CHARACTERS 128
 #define BLANK_CHAR '\0'
@@ -235,5 +237,23 @@ void read_via_file();
 
 */
 char* read_dynamic();
+
+/*
+    Melakukan cetak teks di tengah layar
+    I.S : Masukan belum dimasukkan sebagai parameter dan belum ada tampilan di tengah layar
+    F.S : Masukan sudah dimasukkan sebagai parameter lalu muncul tampilan di tengah layar
+
+*/
+void printc();
+
+/*
+    Melakukan cetak judul program
+    I.S : Judul belum tampil di layar
+    F.S : Judul tampil di layar
+
+*/
+void print_title();
+
+
 
 #endif

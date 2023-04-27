@@ -105,14 +105,15 @@ void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)
 
 void read_via_char()
 {
+    print_title();
     system("cls");
     getchar(); // pembuang karakter enter
 
     int i, sum_of_character, frequency_map[MAX_ASCII_CHARACTERS] = {0};
     char *input_string;
 
-    // meminta inputan jumlah karakter yang akan dikompresi
-    printf("Masukkan banyak karakter yang akan dikompresi : ");
+    // meminta inputan jumlah karakter yang aHan diencode
+    printf("Masukkan banyak karakter yang aHan diencode : ");
     scanf("%d", &sum_of_character);
     printf("\n");
 
@@ -152,7 +153,7 @@ void read_via_char()
     const char *string_new = (const char *)input_string;
     const char *for_history = (const char *)input_string;
 
-    printf("\nhasil kompresi:");
+    printf("\nHasil encode:");
     while (*string_new)
     {
         int letter = (int)*string_new++;
@@ -160,7 +161,7 @@ void read_via_char()
         write_code_to_file(table + letter);
         write_code_to_file_hasil(table + letter);
 
-        printf("\nString setelah dekompresi\n");
+        printf("\nString setelah didecode\n");
         decode_string(root);
         printf("\n");
         save_history(for_history, &code);
@@ -173,6 +174,7 @@ void read_via_char()
 
 void read_via_string()
 {
+    print_title();
     system("cls");
     getchar(); // pembuang karakter enter
     int unique_chars = 0, sentence_size = 0, sentence_capacity = 1;
