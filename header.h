@@ -106,12 +106,7 @@ huffman_node_t* delete_node(huffman_NRLL *NRLL);
  */
 huffman_node_t* make_huffman_node(char letter, int frequency, huffman_node_t *left, huffman_node_t *right);
 
-/*
-    Menghitung banyaknya list yang terdapat pada NRLL
-    I.S : Tidak diketahui jumlah list yang terdapat pada NRLL
-    F.S : Diketahui jumlah list yang berada di NRLL
- */
-int NRLL_size(huffman_NRLL NRLL);
+
 
 /*  Output tree dari level 0
     I.S : Huffman tree belum ditampilkan ke layar
@@ -244,7 +239,7 @@ char* read_dynamic();
     F.S : Masukan sudah dimasukkan sebagai parameter lalu muncul tampilan di tengah layar
 
 */
-void printc();
+void printc(char Pesan[]);
 
 /*
     Melakukan cetak judul program

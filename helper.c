@@ -51,6 +51,20 @@ void print_hierarchy(huffman_node_t *current, int level)
     }
 }
 
+void print_NRLL(huffman_NRLL NRLL)
+{
+    printf("[");
+    huffman_node_t *current = NRLL.front;
+    while (current != NULL)
+    {
+        printf("%c%d", current->letter, current->frequency);
+        if (current->next != NULL)
+            printf(", ");
+        current = current->next;
+    }
+    printf("]\n");
+}
+
 char* read_dynamic(){
     char* sentence = (char*)malloc(1);
     int sentence_size = 0;

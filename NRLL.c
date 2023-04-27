@@ -39,7 +39,8 @@ void input_node(huffman_NRLL *NRLL, huffman_node_t *new_node)
     {
         if (NRLL->front->frequency >= new_node->frequency)
         {
-            input_node_front(NRLL, new_node);
+            new_node->next = NRLL->front;
+            NRLL->front = new_node;
         }
         else
         {

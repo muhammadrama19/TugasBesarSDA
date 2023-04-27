@@ -10,6 +10,7 @@ huffman_node_t *make_huffman_node(char letter, int frequency, huffman_node_t *le
 {
     huffman_node_t *new_node = (huffman_node_t *)malloc(sizeof(huffman_node_t));
 
+
     if (new_node == NULL)
     {
         printf("Alokasi gagal...");
@@ -35,6 +36,7 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTERS])
         {
             //pemrosesan awal dimana masih berbentuk list
             huffman_node_t *new_node = make_huffman_node(i, frequency_map[i], NULL, NULL);
+            
             input_node(&forest, new_node);
         }
     }
@@ -69,8 +71,15 @@ void build_huffman_tree(huffman_NRLL *NRLL)
         int steps = 1;
         while ((*NRLL).size > 1)
         {
-            huffman_node_t *smallest, *second_smallest;
+            huffman_node_t *smallest=(huffman_node_t*)malloc(sizeof(huffman_node_t));
+            huffman_node_t *second_smallest=(huffman_node_t*)malloc(sizeof(huffman_node_t));
 
+            if (smallest==NULL || second_smallest)
+            {
+                printf("Alokasi gagal!");
+                return;
+            }
+            
             // ambil dua node dengan frequency terkecil
             smallest = delete_node(NRLL);
             second_smallest = delete_node(NRLL);
@@ -103,7 +112,7 @@ void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)
     }
 }
 
-void read_via_char()
+void read_via_char() //not finished
 {
     print_title();
     system("cls");
@@ -146,8 +155,13 @@ void read_via_char()
     input_string[i] = '\0'; // Null-terminate the input string
     codeblocks code = {0};
     codeblocks table[MAX_ASCII_CHARACTERS] = {0};
-    huffman_node_t *root = execute_huffman(frequency_map);
-    compute_code_table(root, table, code);
+    huffman_node_t *root = create_huffman(frequency_map);
+    if (root==NULL)
+    {
+        printf("Alokasi gagal, root tidak terbentuk.");
+    }
+    
+    create_code(root, table, code);
     print_code_table(table);
 
     const char *string_new = (const char *)input_string;
@@ -219,6 +233,10 @@ void read_via_string()
     }
 
     huffman_node_t *root = create_huffman(frequency_map);
+    if (root==NULL)
+    {
+        printf("Alokasi gagal, root tidak terbentuk.");
+    }
 
     // make code
     create_code(root, table, code);
