@@ -121,8 +121,8 @@ void read_via_char() //not finished
     int i, sum_of_character, frequency_map[MAX_ASCII_CHARACTERS] = {0};
     char *input_string;
 
-    // meminta inputan jumlah karakter yang aHan diencode
-    printf("Masukkan banyak karakter yang aHan diencode : ");
+    // meminta inputan jumlah karakter yang akan diencode
+    printf("Masukkan banyak karakter yang akan diencode : ");
     scanf("%d", &sum_of_character);
     printf("\n");
 
@@ -264,6 +264,55 @@ void read_via_string()
     fclose(fopen("hasil.txt", "w"));
     free(sentence);
     destroy_tree(root);
+}
+
+void run_huffman_read_file()
+{
+    system("cls");
+    getchar();
+    char letter;
+    printf("Masukkan nama file beserta directory (jika bukan satu folder) dan format filenya: ");
+    // scanf("%s", filename);
+    char *filename = read_dynamic();
+    char *file_pointer = (char *)filename;
+    FILE *file_to_read, *fp;
+    file_to_read = fopen(file_pointer, "r");
+
+    if (!file_to_read){
+        printf("File tidak ditemukan");
+        ask_for_exit();
+    }
+    int frequency_map[MAX_ASCII_CHARACTERS] = {0};
+    while ((letter = fgetc(file_to_read)) != EOF){
+        frequency_map[(int)letter++]++;
+    }
+    fclose(file_to_read);
+    codeblocks code = { 0 };
+    codeblocks table[MAX_ASCII_CHARACTERS] = { 0 };
+    huffman_node_t *root = execute_huffman(frequency_map);
+
+    compute_code_table(root, table, code);
+    print_code_table(table);
+
+    printf("\nString setelah dikompresi\n");
+    file_to_read = fopen(file_pointer, "r");
+    char input_str[MAX_ASCII_CHARACTERS * 1000] = {0}; // inisialisasi string input
+    while ((letter = fgetc(file_to_read)) != EOF){
+        code_print(table + letter);
+        write_code_to_file(table + letter);
+        write_code_to_file_hasil(table + letter);
+		write_code_to_file_bin(table + letter);
+        sprintf(input_str + strlen(input_str), "%c", letter); // menambahkan karakter ke string input
+    }
+    printf("\n");
+    printf("\nString setelah dekompresi\n");
+    decode_string(root);
+    save_history(input_str, &code);
+    printf("\n");
+    fclose(fopen("encodedString.txt", "w"));
+	fclose(fopen("hasil.txt", "w"));
+    fclose(file_to_read);
+	destroy_tree(root);
 }
 
 void destroy_tree(huffman_node_t *root)
