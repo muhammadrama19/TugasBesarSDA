@@ -103,6 +103,74 @@ void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)
     }
 }
 
+void read_via_char()
+{
+    system("cls");
+    getchar(); // pembuang karakter enter
+
+    int i, sum_of_character, frequency_map[MAX_ASCII_CHARACTERS] = {0};
+    char *input_string;
+
+    // meminta inputan jumlah karakter yang akan dikompresi
+    printf("Masukkan banyak karakter yang akan dikompresi : ");
+    scanf("%d", &sum_of_character);
+    printf("\n");
+
+    input_string = (char *)malloc(10000 * sizeof(char)); // allocate memory for the input string
+
+    // membaca karakter dan frekuensinya
+    for (i = 0; i < sum_of_character; i++)
+    {
+        char letter;
+        printf("Karakter ke - %d\n", i + 1);
+        printf("Masukkan karakter\t: ");
+        scanf(" %c", &letter);
+
+        // handle ketika ada karakter yang telah ada diinput kembali
+        // karakter akan ditambah frekuensinya
+        if (frequency_map[letter])
+        {
+            int frequency;
+            scanf("%d", &frequency);
+            frequency_map[letter] += frequency;
+        }
+        else
+        {
+            printf("Masukkan frekuensi\t: ");
+            scanf("%d", &frequency_map[letter]);
+        }
+        input_string[i] = letter; // Add the letter to the input string
+        printf("\n");
+    }
+    input_string[i] = '\0'; // Null-terminate the input string
+    codeblocks code = {0};
+    codeblocks table[MAX_ASCII_CHARACTERS] = {0};
+    huffman_node_t *root = execute_huffman(frequency_map);
+    compute_code_table(root, table, code);
+    print_code_table(table);
+
+    const char *string_new = (const char *)input_string;
+    const char *for_history = (const char *)input_string;
+
+    printf("\nhasil kompresi:");
+    while (*string_new)
+    {
+        int letter = (int)*string_new++;
+        code_print(table + letter);
+        write_code_to_file(table + letter);
+        write_code_to_file_hasil(table + letter);
+
+        printf("\nString setelah dekompresi\n");
+        decode_string(root);
+        printf("\n");
+        save_history(for_history, &code);
+        fclose(fopen("encodedString.txt", "w"));
+        fclose(fopen("hasil.txt", "w"));
+        destroy_tree(root);
+        free(input_string);
+    }
+}
+
 void read_via_string()
 {
     system("cls");
@@ -262,3 +330,4 @@ void save_history(const char *input_string, codeblocks *code)
     // Menutup file history.txt
     fclose(file_to_write);
 }
+
