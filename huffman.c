@@ -321,7 +321,7 @@ void read_via_file(){
     // scanf("%s", filename);
     char *filename = read_dynamic();
     char *file_pointer = (char *)filename;
-    FILE *file_to_read, *fp;
+    FILE *file_to_read;
     file_to_read = fopen(file_pointer, "r");
 
     if (!file_to_read){

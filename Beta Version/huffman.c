@@ -154,7 +154,7 @@ void read_via_char() // not finished
     printf("Masukkan banyak karakter yang akan diencode : ");
     scanf("%d", &sum_of_character);
     printf("\n");
-    while (sum_of_character<=0)
+    while (sum_of_character<0)
     {
         printf("Jumlah tidak boleh negatif!");
         scanf("%d",&sum_of_character);
@@ -318,15 +318,14 @@ void read_via_file()
     getchar();
     char letter;
     printf("Masukkan nama file beserta directory (jika bukan satu folder) dan format filenya: ");
-    // scanf("%s", filename);
-    char *filename = read_dynamic();
+    char *filename = read_dynamic(); //read file secara dinamis
     char *file_pointer = (char *)filename;
     FILE *file_to_read, *fp;
     file_to_read = fopen(file_pointer, "r");
 
     if (!file_to_read)
     {
-        printf("File tidak ditemukan");
+        printf("File tidak ditemukan atau nama file melebihi 256 char");
         ask_for_exit();
     }
     int frequency_map[MAX_ASCII_CHARACTER] = {0};
@@ -344,17 +343,17 @@ void read_via_file()
 
     printf("\nString setelah dikompresi\n");
     file_to_read = fopen(file_pointer, "r");
-    fseek(file_to_read, 0L, SEEK_END); // move to the end of the file
-    long file_size = ftell(file_to_read); // get the size of the file in bytes
-    rewind(file_to_read); // move back to the beginning of the file
-    char *input_str = (char *) malloc(file_size + 1); // dynamically allocate memory for the input string
-    input_str[0] = '\0'; // initialize the string to empty
+    fseek(file_to_read, 0L, SEEK_END); //arahkan ke ujung file
+    long file_size = ftell(file_to_read); // file size
+    rewind(file_to_read); // kembalikan ke awal file
+    char *input_str = (char *) malloc(file_size + 1); // alokasikan sesuai file size terbaca melalui ftell
+    input_str[0] = '\0'; // insialisasi
     while ((letter = fgetc(file_to_read)) != EOF)
     {
         code_print(table + letter);
         write_code_to_file(table + letter);
         write_code_to_file_hasil(table + letter);
-        sprintf(input_str + strlen(input_str), "%c", letter); // append the character to the input string
+        sprintf(input_str + strlen(input_str), "%c", letter); // append char ke input_str utk nanti di history
     }
     printf("\n");
     printf("\nString setelah dekompresi\n");
@@ -365,6 +364,6 @@ void read_via_file()
     fclose(fopen("hasil.txt", "w"));
     fclose(file_to_read);
     destroy_tree(root);
-    free(input_str); // free the dynamically allocated memory
+    free(input_str); // 
 }
 
