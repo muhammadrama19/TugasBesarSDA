@@ -105,7 +105,7 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTER])
 }
 
 
-void create_code(huffman_node_t *node, codeblocks *table, codeblocks code)
+void create_code(huffman_node_t *node, codewords *table, codewords code)
 {
     if (is_leaf(node))
     {
@@ -207,8 +207,8 @@ void read_via_char()
         printf("\n");
     }
 
-    codeblocks code = {0};
-    codeblocks table[MAX_ASCII_CHARACTER] = {0};
+    codewords code = {0};
+    codewords table[MAX_ASCII_CHARACTER] = {0};
     huffman_node_t *root = create_huffman(frequency_map);
     create_code(root, table, code);
     print_code_table(table);
@@ -276,8 +276,8 @@ void read_via_string()
     }
 
     // membuat huffman tree, mengembalikan root untuk proses decode nantinya
-    codeblocks code = {0};
-    codeblocks table[MAX_ASCII_CHARACTER] = {0};
+    codewords code = {0};
+    codewords table[MAX_ASCII_CHARACTER] = {0};
     huffman_node_t *root = create_huffman(frequency_map);
 
     // make code
@@ -333,8 +333,8 @@ void read_via_file(){
         frequency_map[(int)letter++]++;
     }
     fclose(file_to_read);
-    codeblocks code = { 0 };
-    codeblocks table[MAX_ASCII_CHARACTER] = { 0 };
+    codewords code = { 0 };
+    codewords table[MAX_ASCII_CHARACTER] = { 0 };
     huffman_node_t *root = create_huffman(frequency_map);
 
     create_code(root, table, code);

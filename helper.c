@@ -46,7 +46,7 @@ void print_hierarchy(huffman_node_t *current, int level)
     }
 }
 
-void print_code_table(codeblocks *table)
+void print_code_table(codewords *table)
 {
     printf("\nTabel Konversi\n");
     int x;
@@ -60,7 +60,7 @@ void print_code_table(codeblocks *table)
         }
     }
 }
-void code_print(codeblocks *code)
+void code_print(codewords *code)
 {
     size_t n = code->code_length;
     while (n-- > 0)
@@ -69,7 +69,7 @@ void code_print(codeblocks *code)
     }
 }
 
-void write_code_to_file(codeblocks *code)
+void write_code_to_file(codewords *code)
 {
     size_t n = code->code_length;
     FILE *file_to_write = fopen("encodedString.txt", "a");
@@ -82,7 +82,7 @@ void write_code_to_file(codeblocks *code)
     fclose(file_to_write);
 }
 
-void write_code_to_file_hasil(codeblocks *code)
+void write_code_to_file_hasil(codewords *code)
 {
     size_t n = code->code_length;
     FILE *file_to_write = fopen("hasil.txt", "a");
@@ -95,7 +95,7 @@ void write_code_to_file_hasil(codeblocks *code)
     fclose(file_to_write);
 }
 
-void save_history(const char *input_string, codeblocks *code)
+void save_history(const char *input_string, codewords *code)
 {
     // Membuka file history.txt untuk menambahkan hasil kompresi
     FILE *file_to_write = fopen("history.txt", "a");

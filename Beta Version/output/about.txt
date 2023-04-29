@@ -1,0 +1,8 @@
+Huffman Algorithm adalah sa1ah satu algoritma kompresi tertua yang disusun oleh David
+Huffman pada tahun 1952. Algoritrna tersebut digunakan untuk membuat kompresi jenis loss
+compression, yaitu pemampatan data dimana tidak satu byte pun hilang sehingga data tersebut utuh dan
+disimpan sesuai dengan aslinya. Prinsip kerja algoritma Huffman adalah mengkodekan setiap karakter
+ke dalam representasi bit. Representasi bit untuk setiap karakter berbeda satu sama lain berdasarkan
+frekuensi kemunculan karakter. Semakin sering karakter tersebut muncul, maka semakin pendek
+panjang representasi bit nya. Sebaliknya bila semakin jarang frekuensi karakter muncul, maka
+semakin panjang representasi bit untuk karakter tersebut 

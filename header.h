@@ -48,11 +48,11 @@ typedef struct huffman_NRLL
 } huffman_NRLL;
 
 /*  Struktur untuk menyimpan binary code dari huffman node */
-typedef struct codeblocks
+typedef struct codewords
 {
     size_t code_length;
     uint32_t bit_code;
-} codeblocks;
+} codewords;
 
 /**==========================================**/
 
@@ -156,7 +156,7 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTER]);
     I.S :  Kode setiap karakter belum diketahui
     F.S :  Kode sudah diketahui
  */
-void create_code(huffman_node_t *node, codeblocks *table, codeblocks code);
+void create_code(huffman_node_t *node, codewords *table, codewords code);
 
 /*
     Mencetak bit code ke layar
@@ -164,14 +164,14 @@ void create_code(huffman_node_t *node, codeblocks *table, codeblocks code);
     I.S : Bit code belum tampil di layar
     F.S : Bit code tampil pada layar
  */
-void code_print(codeblocks *code);
+void code_print(codewords *code);
 
 /*
     Menyimpan string yang telah diterjemahkan menjadi kode biner ke dalam encodedString.txt
     I.S : encodedString.txt belum terisi oleh kode biner
     F.S : encodedString.txt sudah terisi oleh kode biner
  */
-void write_code_to_file(codeblocks *code);
+void write_code_to_file(codewords *code);
 
 /*
     Menerjemahkan string yang telah dikompresi ke string awal dengan membaca encodedString.txt
@@ -185,7 +185,7 @@ void decode_string(huffman_node_t *root);
     I.S : Tabel kode belum tampil di layar
     F.S : Tabel kode tampil pada layar
  */
-void print_code_table(codeblocks *table);
+void print_code_table(codewords *table);
 
 /*
     Membuat NULL root saat program berakhir
@@ -199,7 +199,7 @@ void destroy_tree(huffman_node_t *root);
     I.S : History program belum tersimpan
     F.S : History program telah tersimpan
 */
-void save_history(const char *input_string, codeblocks *code);
+void save_history(const char *input_string, codewords *code);
 
 /*
     Menampilkan history ke layar dari file history.txt. Dengan format input string dan kode hasilnya

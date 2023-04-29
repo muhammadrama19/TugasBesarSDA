@@ -7,6 +7,21 @@ void init_NRLL(huffman_NRLL *NRLL)
     NRLL->size = 0;
 }
 
+huffman_node_t *allocate_node()
+{
+    huffman_node_t *new_node=(huffman_node_t*)malloc(sizeof(huffman_node_t));
+    if (new_node!=NULL)
+    {
+        return new_node;
+    }
+    else
+    {
+        printf("Alokasi gagal");
+        return NULL;
+    }
+    
+}
+
 int is_NRLL_empty(huffman_NRLL NRLL)
 {
     return NRLL.size == 0;
@@ -27,7 +42,7 @@ void input_node(huffman_NRLL *NRLL, huffman_node_t *new_node)
         }
         else
         {
-            huffman_node_t *help_pointer;
+            huffman_node_t *help_pointer=(huffman_node_t*)malloc(sizeof(huffman_node_t));
             help_pointer = NRLL->front;
 
             while (help_pointer->next != NULL && help_pointer->next->frequency < new_node->frequency)

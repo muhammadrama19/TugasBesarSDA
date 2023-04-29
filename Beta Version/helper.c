@@ -46,7 +46,7 @@ void print_hierarchy(huffman_node_t *current, int level)
     }
 }
 
-void print_code_table(codeblocks *table)
+void print_code_table(codewords *table)
 {
     printf("\nTabel Konversi\n");
     int x;
@@ -60,7 +60,7 @@ void print_code_table(codeblocks *table)
         }
     }
 }
-void code_print(codeblocks *code)
+void code_print(codewords *code)
 {
     size_t n = code->code_length;
     while (n-- > 0)
@@ -69,7 +69,7 @@ void code_print(codeblocks *code)
     }
 }
 
-void write_code_to_file(codeblocks *code)
+void write_code_to_file(codewords *code)
 {
     size_t n = code->code_length;
     FILE *file_to_write = fopen("encodedString.txt", "a");
@@ -82,7 +82,7 @@ void write_code_to_file(codeblocks *code)
     fclose(file_to_write);
 }
 
-void write_code_to_file_hasil(codeblocks *code)
+void write_code_to_file_hasil(codewords *code)
 {
     size_t n = code->code_length;
     FILE *file_to_write = fopen("hasil.txt", "a");
@@ -95,7 +95,7 @@ void write_code_to_file_hasil(codeblocks *code)
     fclose(file_to_write);
 }
 
-void save_history(const char *input_string, codeblocks *code)
+void save_history(const char *input_string, codewords *code)
 {
     // Membuka file history.txt untuk menambahkan hasil kompresi
     FILE *file_to_write = fopen("history.txt", "a");
@@ -118,17 +118,15 @@ void save_history(const char *input_string, codeblocks *code)
     fclose(file_to_write);
 }
 
-void display_history()
+void display_file(const char* filename)
 {
     system("cls");
-    FILE *file_to_read = fopen("history.txt", "r");
+    FILE *file_to_read = fopen(filename, "r");
     if (file_to_read == NULL)
     {
         printf("File history.txt tidak ditemukan.\n");
         return;
     }
-
-    printf("Isi dari file history.txt:\n");
     char line[100];
     while (fgets(line, sizeof(line), file_to_read))
     {
@@ -206,8 +204,8 @@ void ask_for_exit()
 void exit_huffman()
 {
     system("cls");
-    printf("\tMenutup program...\n");
-    printf("\tProgram berakhir...\n");
+    printf("Menutup program\n");
+    printf("Terimakasih telah menggunakan program kami semoga bermanfaat!\n");
     exit(1);
 }
 
@@ -233,7 +231,12 @@ void run_huffman()
     }
     case DISPLAY_HISTORY:
     {
-        display_history();
+        display_file("history.txt");
+        break;
+    }
+    case DISPLAY_ABOUT:
+    {
+        display_file("about.txt");
         break;
     }
     case EXIT:
@@ -288,7 +291,6 @@ void print_title()
     printc("888    888Y88b. .d88P888       888       888   '   888 d8888888888888   Y8888   Y88b  d88PY88b. .d88P888  .d88P 888  888   Y8888Y88b  d88P\n");
     printc("888    888 'Y88888P' 888       888       888       888d88P     888888    Y888   'Y8888P'  'Y88888P' 8888888P'8888888888    Y888 'Y8888P88 \n");
     printf("\n\n");
-    printc("\t\t\t\t\t\t\t      created by Kelompok 1B Kelas 1A\n");
     printf("\n\n\n\n\n");
 }
 
@@ -325,13 +327,13 @@ int choose_read_type()
 char input_char()
 {
     char input[100];
-    printf("Masukkan karakter\t: ");
+    Start:
     fgets(input, 100, stdin);
     if (strlen(input) == 2) {
         return input[0];
     } else {
         printf("Invalid input. Masukan berupa karakter!.\n");
-        return input_char();
+        goto Start;
     }
 }
 

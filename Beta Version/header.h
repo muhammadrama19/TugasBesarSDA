@@ -49,11 +49,11 @@ typedef struct huffman_NRLL
 } huffman_NRLL;
 
 /*  Struktur untuk menyimpan binary code dari huffman node */
-typedef struct codeblocks
+typedef struct codewords
 {
     size_t code_length;
     uint32_t bit_code;
-} codeblocks;
+} codewords;
 
 /**==========================================**/
 
@@ -81,27 +81,6 @@ int is_NRLL_empty(huffman_NRLL NRLL);
     F.S : Terdapat node di dalam list dengan urutan ascending
  */
 void input_node(huffman_NRLL *NRLL, huffman_node_t *new_node);
-
-/*
-    Memasukan node ke list di posisi front
-    I.S : Node belum terpasang. List kosong
-    F.S : Node baru sudah terpasang didalam list
-*/
-void input_node_front(huffman_NRLL *NRLL, huffman_node_t *new_node);
-
-/*
-    Memasukan node ke list di posisi tengah tengah
-    I.S : Terdapat node minimal 2 node. Node belum terpasang
-    F.S : Node baru sudah terpasang didalam list diantara dua node
-*/
-void input_node_middle(huffman_node_t *new_node, huffman_node_t *help_pointer);
-
-/*
-    Memasukan node ke list di posisi rear (ujung)
-    I.S : Node belum terpasang
-    F.S : Node baru sudah terpasang didalam list
-*/
-void input_node_rear(huffman_node_t *new_node, huffman_node_t *help_pointer);
 
 /*
     Mengeluarkan node dari list untuk diproses menjadi left dan right son
@@ -157,7 +136,7 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTER]);
     I.S :  Kode setiap karakter belum diketahui
     F.S :  Kode sudah diketahui
  */
-void create_code(huffman_node_t *node, codeblocks *table, codeblocks code);
+void create_code(huffman_node_t *node, codewords *table, codewords code);
 
 /*
     Mencetak bit code ke layar
@@ -165,14 +144,14 @@ void create_code(huffman_node_t *node, codeblocks *table, codeblocks code);
     I.S : Bit code belum tampil di layar
     F.S : Bit code tampil pada layar
  */
-void code_print(codeblocks *code);
+void code_print(codewords *code);
 
 /*
     Menyimpan string yang telah diterjemahkan menjadi kode biner ke dalam encodedString.txt
     I.S : encodedString.txt belum terisi oleh kode biner
     F.S : encodedString.txt sudah terisi oleh kode biner
  */
-void write_code_to_file(codeblocks *code);
+void write_code_to_file(codewords *code);
 
 /*
     Menerjemahkan string yang telah dikompresi ke string awal dengan membaca encodedString.txt
@@ -186,7 +165,7 @@ void decode_string(huffman_node_t *root);
     I.S : Tabel kode belum tampil di layar
     F.S : Tabel kode tampil pada layar
  */
-void print_code_table(codeblocks *table);
+void print_code_table(codewords *table);
 
 /*
     Membuat NULL root saat program berakhir
@@ -200,14 +179,14 @@ void destroy_tree(huffman_node_t *root);
     I.S : History program belum tersimpan
     F.S : History program telah tersimpan
 */
-void save_history(const char *input_string, codeblocks *code);
+void save_history(const char *input_string, codewords *code);
 
 /*
-    Menampilkan history ke layar dari file history.txt. Dengan format input string dan kode hasilnya
-    I.S : History belum ditampilkan
-    F.S : History sudah ditampilkan
+    Menampilkan history ke layar dari file Dengan format input string dan kode hasilnya
+    I.S : file belum ditampilkan
+    F.S : file sudah ditampilkan
 */
-void display_history();
+void display_file(const char* filename);
 
 /*
     Melakukan encoding melalui input string. Modul ini akan melakukan pemanggilan modul modul diatas
@@ -240,6 +219,14 @@ void read_via_file();
 */
 char *read_dynamic();
 
+
+/*
+    Melakukan alokasi node
+    I.S: Node belum terpesan dan bisa jadi gagal
+    F.S: Node berhasil dipesan sesuai 
+*/
+huffman_node_t *allocate_node();
+
 /*
     Melakukan cetak teks di tengah layar
     I.S : Masukan belum dimasukkan sebagai parameter dan belum ada tampilan di tengah layar
@@ -260,7 +247,7 @@ int choose_read_type();
 void run_huffman();
 void exit_huffman();
 void ask_for_exit();
-char input_char(void); 
-int input_integer(void);
+char input_char(); 
+int input_integer();
 
 #endif
