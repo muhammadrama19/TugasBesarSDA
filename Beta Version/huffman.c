@@ -114,9 +114,14 @@ void decode_string(huffman_node_t *root)
 {
     FILE *file_to_read = fopen("encodedString.txt", "r");
 
-    assert(file_to_read != NULL);
+    if (file_to_read==NULL)
+    {
+       printf("Gagal membuka file...");
+       return;
+    }
 
-    huffman_node_t *current = root;
+    huffman_node_t *current = allocate_node();
+    current=root;
     char letter;
     while ((letter = fgetc(file_to_read)) != EOF)
     {
@@ -206,7 +211,7 @@ void read_via_char() {
     const char *string_new = (const char *)input_string;
     const char *for_history = (const char *)input_string;
 
-    printf("\nHasil Encode setiap karakter:\n");
+    printf("\nHasil Encode setiap karakter sesuai urutan input:\n");
     while (*string_new)
     {
         int letter = (int)*string_new++;
@@ -214,7 +219,7 @@ void read_via_char() {
         write_code_to_file(table + letter);
         write_code_to_file_hasil(table + letter);
     }
-    printf("\nKarakter-karakter dalam bentuk string setelah didecode\n");
+    printf("\nKarakter-karakter secara tersusun setelah didecode\n");
     decode_string(root);
     printf("\n");
     save_history(for_history, &code);
