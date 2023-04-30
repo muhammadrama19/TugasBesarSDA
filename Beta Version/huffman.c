@@ -145,6 +145,8 @@ void read_via_char() {
 
     system("cls");
     getchar(); // pembuang karakter enter
+    //membersihkan result.txt agar tidak tercampur 
+    fclose(fopen("result.txt", "w"));
 
     int i, sum_of_character, frequency_map[MAX_ASCII_CHARACTER] = {0};
     char *input_string;
@@ -152,9 +154,9 @@ void read_via_char() {
     // meminta inputan jumlah karakter yang akan diencode
     printf("Masukkan banyak karakter yang akan diencode : ");
     sum_of_character=input_integer();
-    while (sum_of_character<0)
+    while (sum_of_character<0 || sum_of_character==1)
     {
-        printf("Tidak boleh negatif!! \n");
+        printf("Jumlah Tidak boleh negatif  atau jumlah karakter tidak boleh hanya 1 !! \n");
         printf("Masukkan banyak karakter yang akan diencode : ");
         sum_of_character=input_integer();
     }
@@ -217,14 +219,12 @@ void read_via_char() {
         int letter = (int)*string_new++;
         code_print(table + letter);
         write_code_to_file(table + letter);
-        write_code_to_file_hasil(table + letter);
     }
     printf("\nKarakter-karakter secara tersusun setelah didecode\n");
     decode_string(root);
     printf("\n");
     save_history(for_history, &code);
     fclose(fopen("encodedString.txt", "w"));
-    fclose(fopen("hasil.txt", "w"));
     destroy_tree(root);
     free(input_string);
 }
@@ -233,6 +233,8 @@ void read_via_string()
 {
     system("cls");
     getchar(); // pembuang karakter enter
+    //membersihkan result.txt agar tidak tercampur 
+    fclose(fopen("result.txt", "w"));
 
     // insialisasi
     printf("Masukan kalimat: ");
@@ -290,7 +292,6 @@ void read_via_string()
         int letter = (int)*to_encode_string++;
         code_print(table + letter);
         write_code_to_file(table + letter);
-        write_code_to_file_hasil(table + letter);
     }
     printf("\n");
 
@@ -303,7 +304,6 @@ void read_via_string()
     // dengan kode sebelumnya
     save_history(sentence, &code);
     fclose(fopen("encodedString.txt", "w"));
-    fclose(fopen("hasil.txt", "w"));
     destroy_tree(root);
     free(sentence);
 }
@@ -311,6 +311,9 @@ void read_via_file()
 {
     system("cls");
     getchar();
+
+    //membersihkan result.txt agar tidak tercampur 
+    fclose(fopen("result.txt", "w"));
     char letter;
     printf("Masukkan nama file beserta directory (jika bukan satu folder) dan format filenya: ");
     char *filename = read_dynamic(); //read file secara dinamis
@@ -349,7 +352,6 @@ void read_via_file()
     {
         code_print(table + letter);
         write_code_to_file(table + letter);
-        write_code_to_file_hasil(table + letter);
         sprintf(input_str + strlen(input_str), "%c", letter); // append char ke input_str utk nanti di history
     }
     printf("\n");
@@ -358,7 +360,6 @@ void read_via_file()
     save_history(input_str, &code);
     printf("\n");
     fclose(fopen("encodedString.txt", "w"));
-    fclose(fopen("hasil.txt", "w"));
     fclose(file_to_read);
     destroy_tree(root);
     free(input_str); // 

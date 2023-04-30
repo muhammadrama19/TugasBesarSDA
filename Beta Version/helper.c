@@ -73,26 +73,16 @@ void write_code_to_file(codewords *code)
 {
     size_t n = code->code_length;
     FILE *file_to_write = fopen("encodedString.txt", "a");
+    FILE *file_result = fopen("result.txt", "a");
 
     // mengisi file dengan code setelah kompresi
     while (n-- > 0)
     {
         fputc(('0' + ((code->bit_code >> n) & 1)), file_to_write);
+        fputc(('0' + ((code->bit_code >> n) & 1)), file_result);
     }
     fclose(file_to_write);
-}
-
-void write_code_to_file_hasil(codewords *code)
-{
-    size_t n = code->code_length;
-    FILE *file_to_write = fopen("hasil.txt", "a");
-
-    // mengisi file dengan code setelah kompresi
-    while (n-- > 0)
-    {
-        fputc(('0' + ((code->bit_code >> n) & 1)), file_to_write);
-    }
-    fclose(file_to_write);
+    fclose(file_result);
 }
 
 void save_history(const char *input_string, codewords *code)
@@ -104,14 +94,15 @@ void save_history(const char *input_string, codewords *code)
     fputs(input_string, file_to_write);
     fputs(", ", file_to_write);
 
-    // Membuka file hasil.txt untuk membaca string setelah dikompresi
-    FILE *file_to_read = fopen("hasil.txt", "r");
+    // Membuka file untuk membaca string setelah dikompresi
+    FILE *file_to_read = fopen("encodedString.txt", "r");
     char compressed_str[MAX_ASCII_CHARACTER * 8 + 1];
     fgets(compressed_str, MAX_ASCII_CHARACTER * 8 + 1, file_to_read);
     fclose(file_to_read);
 
     // Menyimpan string hasil kompresi ke dalam file
     fputs(compressed_str, file_to_write);
+    fputs("\n", file_to_write);
     fputs("\n", file_to_write);
 
     // Menutup file history.txt
@@ -176,7 +167,7 @@ char *read_dynamic()
 void ask_for_exit()
 {
     int answer;
-    printf("\nApakah Anda ingin mensimulasikan kembali? 0: Tidak, 1: Ya\n");
+    printf("\nTekan 1 : Kembali ke Menu, 0: Keluar Program\n");
     scanf("%d", &answer);
 
     switch (answer)
@@ -204,8 +195,8 @@ void ask_for_exit()
 void exit_huffman()
 {
     system("cls");
-    printf("Menutup program\n");
-    printf("Terimakasih telah menggunakan program kami semoga bermanfaat!\n");
+    printc("=======Menutup program=======\n");
+    printc("Terimakasih telah menggunakan program kami semoga bermanfaat!\n");
     exit(1);
 }
 
@@ -230,7 +221,7 @@ void run_huffman()
         break;
     }
     case DISPLAY_HISTORY:
-    {
+    {    
         display_file("history.txt");
         break;
     }
@@ -281,40 +272,32 @@ void printc(char Pesan[])
 
 void print_title()
 {
-    printf("\n\n");
-    printc("888    888888     88888888888888888888888888b     d888       d8888888b    888   .d8888b.  .d88888b. 8888888b.8888888888b    888 .d8888b.  \n");
-    printc("888    888888     888888       888       8888b   d8888      d888888888b   888   d88P  Y88bd88P' 'Y88b888' 'Y88b 888  8888b   888d88P  Y88b\n");
-    printc("888    888888     888888       888       88888b.d88888     d88P88888888b  888   888    888888     888888    888 888  88888b  888888    888\n");
-    printc("8888888888888     8888888888   8888888   888Y88888P888    d88P 888888Y88b 888   888       888     888888    888 888  888Y88b 888888       \n");
-    printc("888    888888     888888       888       888 Y888P 888   d88P  888888 Y88b888   888       888     888888    888 888  888 Y88b888888  88888\n");
-    printc("888    888888     888888       888       888  Y8P  888  d88P   888888  Y88888   888    888888     888888    888 888  888  Y88888888    888\n");
-    printc("888    888Y88b. .d88P888       888       888   '   888 d8888888888888   Y8888   Y88b  d88PY88b. .d88P888  .d88P 888  888   Y8888Y88b  d88P\n");
-    printc("888    888 'Y88888P' 888       888       888       888d88P     888888    Y888   'Y8888P'  'Y88888P' 8888888P'8888888888    Y888 'Y8888P88 \n");
-    printf("\n\n");
-    printf("\n\n\n\n\n");
+    printc("================\n");
+    printc("Huffman Coding\n");
+    printc("created by: Kelompok 1B Kelas 1A\n");
+    printc("===================\n");
 }
 
 int choose_read_type()
 {
     system("cls");
-    // printf("\tProgram Simulasi Huffman Coding\t\n\n");
-    // print_title();
+    print_title();
     printf("\n\n");
     printc("1. Input via kalimat\n");
     printc("Contoh: JTK POLBAN\n");
-    printf("\n");
+    printc("\n");
     printc("2. Input via file txt\n");
     printc("Contoh: tesFile.txt\n");
-    printf("\n");
+    printc("\n");
     printc("3. Input via karakter dan frekuensinya\n");
     printc("Contoh: Karakter 'a', jumlah frekuensi: 2\n");
-    printf("\n");
+    printc("\n");
     printc("4. History\n");
-    printf("\n");
+    printc("\n");
     printc("5. About\n");
-    printf("\n");
+    printc("\n");
     printc("6. Exit\n");
-    printf("\n");
+    printc("\n");
     printc("Pilihan:  ");
 
     int answer;
