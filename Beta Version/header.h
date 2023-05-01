@@ -34,8 +34,8 @@
 /* Struktur huffman node */
 typedef struct huffman_node
 {
-    wchar_t letter;
-    int frequency;
+    char letter;
+    uint32_t frequency;
     struct huffman_node *left;
     struct huffman_node *right;
     struct huffman_node *next;
@@ -45,7 +45,7 @@ typedef struct huffman_node
 typedef struct huffman_NRLL
 {
     huffman_node_t *front;
-    int size;
+    size_t size;
 } huffman_NRLL;
 
 /*  Struktur untuk menyimpan binary code dari huffman node */

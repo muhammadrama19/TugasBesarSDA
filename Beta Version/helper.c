@@ -316,6 +316,7 @@ char input_char()
         return input[0];
     } else {
         printf("Invalid input. Masukan berupa karakter!.\n");
+        printf("Masukan karakter: ");
         goto Start;
     }
 }
@@ -327,10 +328,12 @@ int input_integer(void) {
         valid = 1;
         if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
             printf("Invalid input. Masukan berupa angka!\n");
+            printf("Masukan angka: ");
             valid = 0;
         }
         else if (sscanf(buffer, "%d", &input) != 1) {
             printf("Invalid input. Masukan berupa angka!\n");
+            printf("Masukan angka: ");
             valid = 0;
         }
         else {
@@ -338,6 +341,7 @@ int input_integer(void) {
             for (char *p = buffer; *p != '\0'; p++) {
                 if (!isspace(*p) && !isdigit(*p) && *p != '+' && *p != '-') {
                     printf("Invalid input. Masukan berupa angka.\n");
+                    printf("Masukan angka: ");
                     valid = 0;
                     break;
                 }
@@ -346,3 +350,4 @@ int input_integer(void) {
     } while (!valid);
     return input;
 }
+
