@@ -45,13 +45,13 @@ typedef struct huffman_node
 typedef struct huffman_NRLL
 {
     huffman_node_t *front;
-    size_t size;
+    uint32_t size;
 } huffman_NRLL;
 
 /*  Struktur untuk menyimpan binary code dari huffman node */
 typedef struct codewords
 {
-    size_t code_length;
+    uint32_t code_length;
     uint32_t bit_code;
 } codewords;
 
