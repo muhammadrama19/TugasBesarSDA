@@ -223,7 +223,7 @@ char *read_dynamic();
 /*
     Melakukan alokasi node
     I.S: Node belum terpesan dan bisa jadi gagal
-    F.S: Node berhasil dipesan sesuai 
+    F.S: Node berhasil dipesan sesuai size
 */
 huffman_node_t *allocate_node();
 

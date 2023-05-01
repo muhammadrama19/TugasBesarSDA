@@ -141,6 +141,16 @@ void decode_string(huffman_node_t *root)
     }
 }
 
+void destroy_tree(huffman_node_t *root)
+{
+    if (root != NULL)
+    {
+        destroy_tree(root->left);
+        destroy_tree(root->right);
+        free(root);
+    }
+}
+
 void read_via_char() {
 
     system("cls");
@@ -180,7 +190,7 @@ void read_via_char() {
             printf("Masukkan frekuensi tambahan : ");
             frequency=input_integer();
             while (frequency <= 0) {
-                printf("Frekuensi harus lebih besar dari 0. Silakan masukkan kembali: ");
+                printf("Frekuensi harus lebih besar sama dengan dari 0. Silakan masukkan kembali: ");
                 frequency=input_integer();
             }
             frequency_map[letter] += frequency;
@@ -191,7 +201,7 @@ void read_via_char() {
             printf("Masukkan frekuensi (lebih besar dari 0) : ");
             frequency=input_integer();
             while (frequency <= 0) {
-                printf("Frekuensi harus lebih besar dari 0. Silakan masukkan kembali: ");
+                printf("Frekuensi harus lebih besar sama dengan dari dari 0. Silakan masukkan kembali: ");
                 frequency=input_integer();
             }
             frequency_map[letter] = frequency;
@@ -268,7 +278,7 @@ void read_via_string()
 
     if (unique_chars == 1 || sentence[1] == '\0')
     {
-        printf("tidak bisa membuat tree dengan satu jenis karakter\n");
+        printf("Tidak bisa membuat tree dengan satu jenis karakter\n");
         free(sentence);
         return;
     }
@@ -315,7 +325,7 @@ void read_via_file()
     //membersihkan result.txt agar tidak tercampur 
     fclose(fopen("result.txt", "w"));
     char letter;
-    printf("Masukkan nama file beserta directory (jika bukan satu folder) dan format filenya: ");
+    printf("Masukkan nama file txt dan format filenya: ");
     char *filename = read_dynamic(); //read file secara dinamis
     char *file_pointer = (char *)filename;
     FILE *file_to_read;
@@ -323,7 +333,7 @@ void read_via_file()
 
     if (!file_to_read)
     {
-        printf("File tidak ditemukan atau nama file melebihi 256 char");
+        printf("File tidak ditemukan atau nama file melebihi 256 karakter");
         ask_for_exit();
     }
     int frequency_map[MAX_ASCII_CHARACTER] = {0};
@@ -341,7 +351,7 @@ void read_via_file()
     create_code(root, table, code);
     print_code_table(table);
 
-    printf("\nString setelah dikompresi\n");
+    printf("\nString setelah diencoding\n");
     file_to_read = fopen(file_pointer, "r");
     fseek(file_to_read, 0L, SEEK_END); //arahkan ke ujung file
     long file_size = ftell(file_to_read); // file size
@@ -355,7 +365,7 @@ void read_via_file()
         sprintf(input_str + strlen(input_str), "%c", letter); // append char ke input_str utk nanti di history
     }
     printf("\n");
-    printf("\nString setelah dekompresi\n");
+    printf("\nString setelah decode\n");
     decode_string(root);
     save_history(input_str, &code);
     printf("\n");

@@ -127,16 +127,6 @@ void display_file(const char* filename)
     fclose(file_to_read);
 }
 
-void destroy_tree(huffman_node_t *root)
-{
-    if (root != NULL)
-    {
-        destroy_tree(root->left);
-        destroy_tree(root->right);
-        free(root);
-    }
-}
-
 char *read_dynamic()
 {
     char *sentence = (char *)malloc(1);
