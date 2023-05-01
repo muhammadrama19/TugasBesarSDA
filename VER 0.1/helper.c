@@ -85,7 +85,7 @@ void write_code_to_file(codewords *code)
     fclose(file_result);
 }
 
-void save_history(const char *input_string, codewords *code)
+void save_history(const char *input_string)
 {
     // Membuka file history.txt untuk menambahkan hasil kompresi
     FILE *file_to_write = fopen("history.txt", "a");

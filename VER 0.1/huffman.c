@@ -178,7 +178,7 @@ void read_via_char() {
     // membaca karakter dan frekuensinya
     for (i = 0; i < sum_of_character; i++)
     {
-        char letter;
+        unsigned char letter;
         int frequency;
         printf("Karakter ke - %d\n", i + 1);
         printf("Masukkan karakter\t: ");
@@ -233,7 +233,7 @@ void read_via_char() {
     printf("\nKarakter-karakter secara tersusun setelah didecode\n");
     decode_string(root);
     printf("\n");
-    save_history(for_history, &code);
+    save_history(for_history);
     fclose(fopen("encodedString.txt", "w"));
     destroy_tree(root);
     free(input_string);
@@ -312,7 +312,7 @@ void read_via_string()
 
     // membersihkan file encodedString.txt agar bisa dipakai ullang tanpa tercampur
     // dengan kode sebelumnya
-    save_history(sentence, &code);
+    save_history(sentence);
     fclose(fopen("encodedString.txt", "w"));
     destroy_tree(root);
     free(sentence);
@@ -367,7 +367,7 @@ void read_via_file()
     printf("\n");
     printf("\nString setelah decode\n");
     decode_string(root);
-    save_history(input_str, &code);
+    save_history(input_str);
     printf("\n");
     fclose(fopen("encodedString.txt", "w"));
     fclose(file_to_read);

@@ -21,7 +21,7 @@
 #include<ctype.h>
 
 #define BLANK_CHARACTER '\0'
-#define MAX_ASCII_CHARACTER 128
+#define MAX_ASCII_CHARACTER 256
 
 #define READ_STRING 1
 #define READ_FILE 2
@@ -34,7 +34,7 @@
 /* Struktur huffman node */
 typedef struct huffman_node
 {
-    char letter;
+    unsigned char letter;
     uint32_t frequency;
     struct huffman_node *left;
     struct huffman_node *right;
@@ -179,7 +179,7 @@ void destroy_tree(huffman_node_t *root);
     I.S : History program belum tersimpan
     F.S : History program telah tersimpan
 */
-void save_history(const char *input_string, codewords *code);
+void save_history(const char *input_string);
 
 /*
     Menampilkan history ke layar dari file Dengan format input string dan kode hasilnya
