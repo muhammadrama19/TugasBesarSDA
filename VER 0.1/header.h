@@ -21,7 +21,7 @@
 #include<ctype.h>
 
 #define BLANK_CHARACTER '\0'
-#define MAX_ASCII_CHARACTER 256
+#define MAX_ASCII_CHARACTER 128
 
 #define READ_STRING 1
 #define READ_FILE 2
