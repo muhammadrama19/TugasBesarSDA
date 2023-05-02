@@ -18,7 +18,7 @@
 
 huffman_node_t *make_huffman_node(char letter, int frequency, huffman_node_t *left, huffman_node_t *right)
 {
-    huffman_node_t *new_node=allocate_node();
+    huffman_node_t *new_node = allocate_node();
     // fill new node with info
     new_node->letter = letter;
     new_node->frequency = frequency;
@@ -52,15 +52,15 @@ void build_huffman(huffman_NRLL *NRLL)
         int steps = 1;
         while ((*NRLL).size > 1)
         {
-            huffman_node_t *smallest=allocate_node();
-            huffman_node_t *sec_smallest=allocate_node();
+            huffman_node_t *smallest = allocate_node();
+            huffman_node_t *sec_smallest = allocate_node();
             // ambil dua node dengan frequency terkecil
             smallest = delete_node(NRLL);
             sec_smallest = delete_node(NRLL);
 
             // buat node dengan frequency gabungan dari keduanya
             // dengan anak smallest sebagai anak kiri dan sec_smallest anak kanan
-            huffman_node_t *new_node= make_huffman_node(BLANK_CHARACTER, smallest->frequency + sec_smallest->frequency, smallest, sec_smallest);
+            huffman_node_t *new_node = make_huffman_node(BLANK_CHARACTER, smallest->frequency + sec_smallest->frequency, smallest, sec_smallest);
             // masukkan kembali ke NRLL untuk diurutkan
             input_node(NRLL, new_node);
             printf("Step %d:\t", steps++);
@@ -79,7 +79,7 @@ huffman_node_t *create_huffman(int frequency_map[MAX_ASCII_CHARACTER])
     {
         if (frequency_map[i])
         {
-            huffman_node_t *new_node=make_huffman_node(i, frequency_map[i], NULL, NULL);
+            huffman_node_t *new_node = make_huffman_node(i, frequency_map[i], NULL, NULL);
             input_node(&forest, new_node);
         }
     }
@@ -114,14 +114,14 @@ void decode_string(huffman_node_t *root)
 {
     FILE *file_to_read = fopen("encodedString.txt", "r");
 
-    if (file_to_read==NULL)
+    if (file_to_read == NULL)
     {
-       printf("Gagal membuka file...");
-       return;
+        printf("Gagal membuka file...");
+        return;
     }
 
     huffman_node_t *current = allocate_node();
-    current=root;
+    current = root;
     char letter;
     while ((letter = fgetc(file_to_read)) != EOF)
     {
@@ -151,11 +151,12 @@ void destroy_tree(huffman_node_t *root)
     }
 }
 
-void read_via_char() {
+void read_via_char()
+{
 
     system("cls");
     getchar(); // pembuang karakter enter
-    //membersihkan result.txt agar tidak tercampur 
+    // membersihkan result.txt agar tidak tercampur
     fclose(fopen("result.txt", "w"));
 
     int i, sum_of_character, frequency_map[MAX_ASCII_CHARACTER] = {0};
@@ -163,14 +164,14 @@ void read_via_char() {
 
     // meminta inputan jumlah karakter yang akan diencode
     printf("Masukkan banyak karakter yang akan diencode : ");
-    sum_of_character=input_integer();
-    while (sum_of_character<0 || sum_of_character==1)
+    sum_of_character = input_integer();
+    while (sum_of_character < 0 || sum_of_character == 1)
     {
         printf("Jumlah Tidak boleh negatif  atau jumlah karakter tidak boleh hanya 1 !! \n");
         printf("Masukkan banyak karakter yang akan diencode : ");
-        sum_of_character=input_integer();
+        sum_of_character = input_integer();
     }
-    
+
     printf("\n");
 
     input_string = (char *)malloc(sum_of_character * sizeof(char)); // allocate memory for the input string
@@ -182,16 +183,17 @@ void read_via_char() {
         int frequency;
         printf("Karakter ke - %d\n", i + 1);
         printf("Masukkan karakter\t: ");
-        letter=input_char();
+        letter = input_char();
 
         if (strchr(input_string, letter))
         {
             printf("Karakter %c telah dimasukkan sebelumnya.\n", letter);
             printf("Masukkan frekuensi tambahan : ");
-            frequency=input_integer();
-            while (frequency <= 0) {
+            frequency = input_integer();
+            while (frequency <= 0)
+            {
                 printf("Frekuensi harus lebih besar sama dengan dari 0. Silakan masukkan kembali: ");
-                frequency=input_integer();
+                frequency = input_integer();
             }
             frequency_map[letter] += frequency;
             i--;
@@ -199,13 +201,14 @@ void read_via_char() {
         else
         {
             printf("Masukkan frekuensi (lebih besar dari 0) : ");
-            frequency=input_integer();
-            while (frequency <= 0) {
+            frequency = input_integer();
+            while (frequency <= 0)
+            {
                 printf("Frekuensi harus lebih besar sama dengan dari dari 0. Silakan masukkan kembali: ");
-                frequency=input_integer();
+                frequency = input_integer();
             }
             frequency_map[letter] = frequency;
-            input_string[i] = letter; 
+            input_string[i] = letter;
         }
         printf("\n");
     }
@@ -214,8 +217,8 @@ void read_via_char() {
     codewords code = {0};
     codewords table[MAX_ASCII_CHARACTER] = {0};
 
-    //pembentukan
-    huffman_node_t *root=allocate_node();
+    // pembentukan
+    huffman_node_t *root = allocate_node();
     root = create_huffman(frequency_map);
     create_code(root, table, code);
     print_code_table(table);
@@ -243,14 +246,14 @@ void read_via_string()
 {
     system("cls");
     getchar(); // pembuang karakter enter
-    //membersihkan result.txt agar tidak tercampur 
+    // membersihkan result.txt agar tidak tercampur
     fclose(fopen("result.txt", "w"));
 
     // insialisasi
     printf("Masukan kalimat: ");
     char *sentence = read_dynamic();
 
-    // kalimat diubah dari array menjadi array constant
+    // kalimat diubah ke const char
     const char *string = (const char *)sentence;
     const char *to_encode_string = (const char *)sentence;
 
@@ -286,7 +289,7 @@ void read_via_string()
     // membuat huffman tree, mengembalikan root untuk proses decode nantinya
     codewords code = {0};
     codewords table[MAX_ASCII_CHARACTER] = {0};
-    huffman_node_t *root=allocate_node();
+    huffman_node_t *root = allocate_node();
     root = create_huffman(frequency_map);
 
     // make code
@@ -322,20 +325,46 @@ void read_via_file()
     system("cls");
     getchar();
 
-    //membersihkan result.txt agar tidak tercampur 
+    // membersihkan result.txt agar tidak tercampur
     fclose(fopen("result.txt", "w"));
     char letter;
     printf("Masukkan nama file txt dan format filenya: ");
-    char *filename = read_dynamic(); //read file secara dinamis
+    char *filename = read_dynamic(); // read file secara dinamis
     char *file_pointer = (char *)filename;
-    FILE *file_to_read;
-    file_to_read = fopen(file_pointer, "r");
+    FILE *file_to_read = fopen(file_pointer, "r");
 
     if (!file_to_read)
     {
         printf("File tidak ditemukan atau nama file melebihi 256 karakter");
         ask_for_exit();
     }
+
+    // baca karakter pertama
+    int first_char = fgetc(file_to_read);
+
+    // control untuk satu tipe saja
+    bool one_type_only = true;
+
+    // cek jika hanya 1 char
+    int next_char;
+    while ((next_char = fgetc(file_to_read)) != EOF)
+    {
+        if (next_char != first_char)
+        {
+            one_type_only = false;
+            break;
+        }
+    }
+
+
+    fclose(file_to_read);
+
+    if (one_type_only)
+    {
+        printf("File hanya 1 tipe karakter saja sehingga gagal membuat kode.");
+        ask_for_exit();
+    }
+
     int frequency_map[MAX_ASCII_CHARACTER] = {0};
     while ((letter = fgetc(file_to_read)) != EOF)
     {
@@ -345,19 +374,19 @@ void read_via_file()
     codewords code = {0};
     codewords table[MAX_ASCII_CHARACTER] = {0};
 
-    huffman_node_t *root =allocate_node();
-    root=create_huffman(frequency_map);
+    huffman_node_t *root = allocate_node();
+    root = create_huffman(frequency_map);
 
     create_code(root, table, code);
     print_code_table(table);
 
     printf("\nString setelah diencoding\n");
     file_to_read = fopen(file_pointer, "r");
-    fseek(file_to_read, 0L, SEEK_END); //arahkan ke ujung file
-    long file_size = ftell(file_to_read); // file size
-    rewind(file_to_read); // kembalikan ke awal file
-    char *input_str = (char *) malloc(file_size + 1); // alokasikan sesuai file size terbaca melalui ftell
-    input_str[0] = '\0'; // insialisasi
+    fseek(file_to_read, 0L, SEEK_END);               // arahkan ke ujung file
+    long file_size = ftell(file_to_read);            // file size
+    rewind(file_to_read);                            // kembalikan ke awal file
+    char *input_str = (char *)malloc(file_size + 1); // alokasikan sesuai file size terbaca melalui ftell
+    input_str[0] = '\0';                             // insialisasi
     while ((letter = fgetc(file_to_read)) != EOF)
     {
         code_print(table + letter);
@@ -372,6 +401,5 @@ void read_via_file()
     fclose(fopen("encodedString.txt", "w"));
     fclose(file_to_read);
     destroy_tree(root);
-    free(input_str); // 
+    free(input_str); //
 }
-
