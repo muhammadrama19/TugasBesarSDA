@@ -117,21 +117,20 @@ int get_history_num(char filename[])
 
 void save_history(const char *input_string)
 {
-    // Open the history.txt file to append the compression results
+    
     FILE *file_to_write = fopen("history.txt", "a");
-    // Write the original input string and the compressed string to the file
+    
     fprintf(file_to_write, "%d. %s, ", get_history_num("history.txt"), input_string);
 
-    // Open the encodedString.txt file to read the compressed string
+    
     FILE *file_to_read = fopen("encodedString.txt", "r");
     char compressed_str[MAX_ASCII_CHARACTER * 8 + 1];
     fgets(compressed_str, MAX_ASCII_CHARACTER * 8 + 1, file_to_read);
     fclose(file_to_read);
 
-    // Write the compressed string to the file
+    
     fprintf(file_to_write, "%s\n\n", compressed_str);
 
-    // Close the history.txt file
     fclose(file_to_write);
 }
 

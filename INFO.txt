@@ -1,0 +1,12 @@
+=Huffman Coding Program=
+
+Created by: Kelompok 1B kelas 1A.
+Author:
+-Muhammad Rama Nurimani (221524021)
+-Rahma Divina (221524026)
+-Rayhan Fanez Fathiadi (221524027)
+
+
+Refrensi yang digunakan tertera pada pseudocode laporan.
+
+Feel free to use don't forget the credit :)
