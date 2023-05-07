@@ -249,5 +249,6 @@ void exit_huffman();
 void ask_for_exit();
 char input_char(); 
 int input_integer();
+int get_history_num(char filename[]);
 
 #endif

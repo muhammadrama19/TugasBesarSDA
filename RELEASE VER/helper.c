@@ -1,6 +1,10 @@
 #include "header.h"
 #include <stdio.h>
 
+/*
+    Body untuk modul modul komponen pembantu
+*/
+
 void print_NRLL(huffman_NRLL NRLL)
 {
     printf("[");
@@ -85,27 +89,49 @@ void write_code_to_file(codewords *code)
     fclose(file_result);
 }
 
+int get_history_num(char filename[])
+{
+    FILE *file;
+    char ch;
+    int num_newline = 0;
+
+    file = fopen(filename, "r");
+
+    if (file)
+    {
+        while ((ch = fgetc(file)) != EOF)
+        {
+            if (ch == '\n')
+            {
+                num_newline++;
+            }
+        }
+        fclose(file);
+        return (num_newline / 2 + 1);
+    }
+    else
+    {
+        return 1;
+    }
+}
+
 void save_history(const char *input_string)
 {
-    // Membuka file history.txt untuk menambahkan hasil kompresi
+    // Open the history.txt file to append the compression results
     FILE *file_to_write = fopen("history.txt", "a");
+    // Write the original input string and the compressed string to the file
+    fprintf(file_to_write, "%d. %s, ", get_history_num("history.txt"), input_string);
 
-    // Menyimpan string input sebelum dikompresi ke dalam file
-    fputs(input_string, file_to_write);
-    fputs(", ", file_to_write);
-
-    // Membuka file untuk membaca string setelah dikompresi
+    // Open the encodedString.txt file to read the compressed string
     FILE *file_to_read = fopen("encodedString.txt", "r");
     char compressed_str[MAX_ASCII_CHARACTER * 8 + 1];
     fgets(compressed_str, MAX_ASCII_CHARACTER * 8 + 1, file_to_read);
     fclose(file_to_read);
 
-    // Menyimpan string hasil kompresi ke dalam file
-    fputs(compressed_str, file_to_write);
-    fputs("\n", file_to_write);
-    fputs("\n", file_to_write);
+    // Write the compressed string to the file
+    fprintf(file_to_write, "%s\n\n", compressed_str);
 
-    // Menutup file history.txt
+    // Close the history.txt file
     fclose(file_to_write);
 }
 

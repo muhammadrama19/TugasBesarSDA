@@ -168,7 +168,6 @@ void read_via_char()
     while (sum_of_character < 0 || sum_of_character == 1)
     {
         printf("Jumlah Tidak boleh negatif  atau jumlah karakter tidak boleh hanya 1 !! \n");
-        printf("Masukkan banyak karakter yang akan diencode : ");
         sum_of_character = input_integer();
     }
 
@@ -212,7 +211,7 @@ void read_via_char()
         }
         printf("\n");
     }
-    input_string[i] = '\0'; // Null-terminate the input string
+    input_string[i] = '\0'; // Null-terminate 
 
     codewords code = {0};
     codewords table[MAX_ASCII_CHARACTER] = {0};
@@ -223,6 +222,7 @@ void read_via_char()
     create_code(root, table, code);
     print_code_table(table);
 
+    //convert ke konstan agar tidak termanipulasi
     const char *string_new = (const char *)input_string;
     const char *for_history = (const char *)input_string;
 
@@ -356,14 +356,14 @@ void read_via_file()
         }
     }
 
-
-    fclose(file_to_read);
-
     if (one_type_only)
     {
         printf("File hanya 1 tipe karakter saja sehingga gagal membuat kode.");
         ask_for_exit();
     }
+
+    // reset file pointer
+    rewind(file_to_read);
 
     int frequency_map[MAX_ASCII_CHARACTER] = {0};
     while ((letter = fgetc(file_to_read)) != EOF)
